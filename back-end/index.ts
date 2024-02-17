@@ -28,6 +28,10 @@ io.on('connection', (socket) => {
 	console.log("Player connected: ", socket.id);
 	var player: any = null;
 
+	socket.on('test', (data) => {
+		console.log("Test received: ", data);
+	});
+
 	socket.on('getPlayers', async (userInfo, callback) => {
 		
 	});
