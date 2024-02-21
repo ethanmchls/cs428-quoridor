@@ -6,7 +6,7 @@ import GameGrid from './GameGrid';
 function App() {
   var pawn1 = [0, 8];
   var pawn2 = [16, 8];
-  var walls = ["1-0", "1-1", "1-2"];
+  var walls = ["1-0", "1-1", "1-2", "10-7", "11-7", "12-7"];
   return (
     <div className="App">
       {/* <header className="App-header">
