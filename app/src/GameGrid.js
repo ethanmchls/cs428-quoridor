@@ -9,14 +9,15 @@ const GridCell = ({ pos, classes, children }) => {
   );
 };
 
-const GameGrid = ({ pawn1Pos, pawn2Pos }) => {
+const GameGrid = ({ pawn1Pos, pawn2Pos, walls }) => {
   const gridSize = 17;
   // Constants used to adjust the grid cell attributes
   const cellHeight = "h-[70px]";
   const cellWidth = "w-[70px]";
   const wallWidth = "w-[15px]";
   const wallHeight = "h-[15px]";
-  const wallColor = "bg-gray-200";
+  const emptyWallColor = "bg-gray-200";
+  const placedWallColor = "bg-black";
   const cellColor = "bg-gray-300";
 
   const renderGrid = () => {
@@ -26,6 +27,8 @@ const GameGrid = ({ pawn1Pos, pawn2Pos }) => {
       for (let j = 0; j < gridSize; j++) {
         const isYWall = (i % 2 !== 0);
         const isXWall = (j % 2 !== 0);
+        const isPlacedWall = walls.includes(`${i}-${j}`);
+        const wallColor = isPlacedWall ? `${placedWallColor}` : `${emptyWallColor}`;
 
         if (isXWall && !isYWall) {
           row.push(<div key={`${i}-${j}`} className={`${wallWidth} ${cellHeight} ${wallColor}`}></div>);

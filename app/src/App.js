@@ -4,6 +4,9 @@ import './App.css';
 import GameGrid from './GameGrid';
 
 function App() {
+  var pawn1 = [0, 8];
+  var pawn2 = [16, 8];
+  var walls = ["1-0", "1-1", "1-2"];
   return (
     <div className="App">
       {/* <header className="App-header">
@@ -13,8 +16,9 @@ function App() {
 
       </header> */}
 
-      {/* The code below loads the game grid. This should eventually be put into its own view once the router is set up */}
-      <GameGrid pawn1Pos={[0, 8]} pawn2Pos={[16, 8]} />
+      {/* The code below loads the game grid. This should eventually be put into its own view once the router is set up.
+      Currently I'm handling pawn and wall placements by just giving it coordinates as pawn positions and arrays of keys for walls. */}
+      <GameGrid pawn1Pos={pawn1} pawn2Pos={pawn2} walls={walls} />
     </div>
   );
 }
