@@ -1,0 +1,28 @@
+/* Footer class */
+.footer {
+    /* position: fixed; */
+    /* bottom: 0; */
+    left: 0;
+    width: 100%;
+    padding: 20px;
+}
+
+/* Footer content class */
+.footer-content {
+    display: flex;
+    justify-content: center;
+    gap: 1em;
+    font-weight: 300;
+    /* padding-left: 25px; */
+}
+
+.githublogo {
+    height: 25px;
+    padding: 5px;
+}
+
+/* Footer link class */
+.footer-link {
+    display: flex;
+    align-items: center;
+}

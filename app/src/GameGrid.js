@@ -1,5 +1,21 @@
 import React from 'react';
 import Pawn from './Pawn';
+import { Footer } from './footer';
+import './App.css';
+
+export const GameScreen = () => {
+  var pawn1 = [0, 8];
+  var pawn2 = [16, 8];
+  var walls = ["1-0", "1-1", "1-2", "10-7", "11-7", "12-7"];
+  return (
+    <>
+    <div className='App'>
+    <GameGrid pawn1Pos={pawn1} pawn2Pos={pawn2} walls={walls} />
+    </div>
+    <Footer />
+    </>
+  );
+};
 
 const GridCell = ({ pos, classes, children }) => {
   return (
@@ -9,7 +25,7 @@ const GridCell = ({ pos, classes, children }) => {
   );
 };
 
-const GameGrid = ({ pawn1Pos, pawn2Pos, walls }) => {
+export const GameGrid = ({ pawn1Pos, pawn2Pos, walls }) => {
   const gridSize = 17;
   // Constants used to adjust the grid cell attributes
   const cellHeight = "h-[70px]";
