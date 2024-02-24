@@ -50,8 +50,8 @@ describe('Game', () => {
 
         game.sendGameChat(chatMessage);
 
-        expect(gameChatSpy1).toHaveBeenCalledWith('game_chat', chatMessage);
-        expect(gameChatSpy2).toHaveBeenCalledWith('game_chat', chatMessage);
+        expect(gameChatSpy1).toHaveBeenCalledWith('gameChat', chatMessage);
+        expect(gameChatSpy2).toHaveBeenCalledWith('gameChat', chatMessage);
     });
 
     it('should send game end messages to all players', () => {
@@ -60,7 +60,7 @@ describe('Game', () => {
 
         game.sendEndGame();
 
-        expect(gameEndedSpy1).toHaveBeenCalledWith('game_ended');
-        expect(gameEndedSpy2).toHaveBeenCalledWith('game_ended');
+        expect(gameEndedSpy1).toHaveBeenCalledWith('gameEnded');
+        expect(gameEndedSpy2).toHaveBeenCalledWith('gameEnded');
     });
 });

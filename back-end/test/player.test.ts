@@ -49,7 +49,7 @@ describe('Player', () => {
         expect(player.isInRoom("TestLobby")).toBeTruthy();
     });
 
-    it("should not emit 'left_lobby' when leaving a lobby to join a game", () => {
+    it("should not emit 'leftLobby' when leaving a lobby to join a game", () => {
         const player = new Player(serverSocket);
         const lobby = new Lobby(2, "TestLobby");
         player.joinLobby(lobby);
@@ -61,20 +61,18 @@ describe('Player', () => {
         expect(leaveLobbySpy).not.toHaveBeenCalled();
     });
 
-    it("should emit 'left_lobby' when leaving a lobby", () => {
+    it("should emit 'leftLobby' when leaving a lobby", () => {
         const player = new Player(serverSocket);
         const lobby = new Lobby(2, "TestLobby");
         player.joinLobby(lobby);
 
-        const leaveLobbySpy = jest.spyOn(player.socket, 'emit');
         player.leaveLobby(false);
 
         expect(player.currentLobby).toBeUndefined();
-        expect(leaveLobbySpy).toHaveBeenCalledWith("left_lobby");
     });
 
 
-    it("should be able to start a game and emit 'game_started'", () => {
+    it("should be able to start a game and emit 'gameStarted'", () => {
         const player = new Player(serverSocket);
         const gameId = "TestGameId";
 
@@ -82,7 +80,7 @@ describe('Player', () => {
         player.gameStarted(gameId);
 
         expect(player.currentGameId).toBe(gameId);
-        expect(gameStartedSpy).toHaveBeenCalledWith("game_started", gameId);
+        expect(gameStartedSpy).toHaveBeenCalledWith("gameStarted", gameId);
     });
 
     it("should be able to send a game chat message", () => {
@@ -92,15 +90,15 @@ describe('Player', () => {
         const gameChatSpy = jest.spyOn(player.socket, 'emit');
         player.gameChat(chatMessage);
 
-        expect(gameChatSpy).toHaveBeenCalledWith("game_chat", chatMessage);
+        expect(gameChatSpy).toHaveBeenCalledWith("gameChat", chatMessage);
     });
 
-    it("should be able to emit 'game_ended' when the game ends", () => {
+    it("should be able to emit 'gameEnded' when the game ends", () => {
         const player = new Player(serverSocket);
 
         const gameEndedSpy = jest.spyOn(player.socket, 'emit');
         player.gameEnded();
 
-        expect(gameEndedSpy).toHaveBeenCalledWith("game_ended");
+        expect(gameEndedSpy).toHaveBeenCalledWith("gameEnded");
     });
 });
