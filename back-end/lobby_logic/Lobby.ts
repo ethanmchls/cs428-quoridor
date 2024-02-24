@@ -1,6 +1,7 @@
 import { Game } from "./Game";
 import { Games } from "./Games";
 import { Player } from "./Player";
+import { LobbySendType } from "./send-types";
 
 
 export class Lobby {
@@ -41,5 +42,12 @@ export class Lobby {
 
     leaveLobby(player: Player) {
         this.currentPlayers = this.currentPlayers.filter((checkPlayer) => checkPlayer.id != player.id);
+    }
+
+    toShareable(): LobbySendType {
+        return {
+            maxPlayers: this.maxPlayers,
+            currentPlayers: this.currentPlayers.map((player) => player.toShareable()),
+        }
     }
 }
