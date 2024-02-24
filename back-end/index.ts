@@ -4,7 +4,7 @@ import { Server, Socket } from "socket.io";
 import path from "path";
 import cors from "cors";
 import { Player } from "./lobby_logic/Player";
-import { LobbyService, LobbyTypes } from "lobby_logic/LobbyService";
+import { LobbyService, LobbyTypes } from "./lobby_logic/LobbyService";
 
 const app = express();
 
