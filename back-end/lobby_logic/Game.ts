@@ -1,4 +1,4 @@
-import { generateUuid } from "util/uuid";
+import { generateUuid } from "../util/uuid";
 import { Player } from "./Player";
 
 export type GameId = string;

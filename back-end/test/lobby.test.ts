@@ -1,30 +1,36 @@
-import { describe, it, expect, beforeEach, spyOn, beforeAll } from 'bun:test';
-import { Game } from 'lobby_logic/Game';
-import { Games } from 'lobby_logic/Games';
-import { Lobby } from 'lobby_logic/Lobby';
-import { Player } from 'lobby_logic/Player';
+// import { describe, it, expect, beforeEach, jest.spyOn, beforeAll } from 'bun:test';
+import { Game } from '../lobby_logic/Game';
+import { Games } from '../lobby_logic/Games';
+import { Lobby } from '../lobby_logic/Lobby';
+import { Player } from '../lobby_logic/Player';
 import { Server, Socket } from 'socket.io';
-import { createServer } from "node:http";
+import { createServer, Server as HttpServer } from "node:http";
 import { type AddressInfo } from "node:net";
-import { io as ioc } from "socket.io-client";
+import { io as ioc, type Socket as ClientSocket } from "socket.io-client";
 
 describe('Lobby', () => {
     let lobby: Lobby;
     let player1: Player;
     let player2: Player;
-    let serverSocket: Socket;
+    let io: Server, serverSocket: Socket, clientSocket: ClientSocket, httpServer: HttpServer;
 
     beforeAll((done) => {
-        const httpServer = createServer();
-        let io = new Server(httpServer);
+        httpServer = createServer();
+        io = new Server(httpServer);
         httpServer.listen(() => {
             const port = (httpServer.address() as AddressInfo).port;
-            let clientSocket = ioc(`http://localhost:${port}`);
+            clientSocket = ioc(`http://localhost:${port}`);
             io.on("connection", (socket) => {
                 serverSocket = socket;
             });
             clientSocket.on("connect", done);
         });
+    });
+
+    afterAll(() => {
+        httpServer.close();
+        io.close();
+        clientSocket.disconnect();
     });
 
     beforeEach(() => {
@@ -66,7 +72,7 @@ describe('Lobby', () => {
         lobby.joinLobby(player1);
         lobby.joinLobby(player2);
 
-        const createGameSpy = spyOn(Games.getInstance(), 'create');
+        const createGameSpy = jest.spyOn(Games.getInstance(), 'create');
         lobby.createGame();
 
         expect(createGameSpy).toHaveBeenCalledWith(expect.any(Game));

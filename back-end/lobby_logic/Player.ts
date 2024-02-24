@@ -1,7 +1,7 @@
 import { Socket } from "socket.io";
 import { Lobby } from "./Lobby";
 import { GameId } from "./Game";
-import { generateUuid } from "util/uuid";
+import { generateUuid } from "../util/uuid";
 
 export type PlayerId = string;
 

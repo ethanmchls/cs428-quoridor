@@ -1,16 +1,16 @@
 import { Socket, Server } from 'socket.io';
-import { describe, beforeAll, afterAll, expect, it, spyOn } from 'bun:test';
+// import { describe, beforeAll, afterAll, expect, it, jest.spyOn } from 'bun:test';
 import { io as ioc, type Socket as ClientSocket } from "socket.io-client";
-import { createServer } from "node:http";
+import { createServer, Server as HttpServer } from "node:http";
 import { type AddressInfo } from "node:net";
-import { Lobby } from 'lobby_logic/Lobby';
-import { Player } from 'lobby_logic/Player';
+import { Lobby } from '../lobby_logic/Lobby';
+import { Player } from '../lobby_logic/Player';
 
 describe('Player', () => {
-    let io: Server, serverSocket: Socket, clientSocket: ClientSocket;
+    let io: Server, serverSocket: Socket, clientSocket: ClientSocket, httpServer: HttpServer;
 
     beforeAll((done) => {
-        const httpServer = createServer();
+        httpServer = createServer();
         io = new Server(httpServer);
         httpServer.listen(() => {
             const port = (httpServer.address() as AddressInfo).port;
@@ -25,6 +25,7 @@ describe('Player', () => {
     afterAll(() => {
         io.close();
         clientSocket.disconnect();
+        httpServer.close();
     });
 
     it("should have socket set up correctly", (done) => {
@@ -45,7 +46,7 @@ describe('Player', () => {
         const lobby = new Lobby(2, "TestLobby");
         player.joinLobby(lobby);
         expect(player.currentLobby).toBe(lobby);
-        expect(player.isInRoom("TestLobby")).toBeTrue();
+        expect(player.isInRoom("TestLobby")).toBeTruthy();
     });
 
     it("should not emit 'left_lobby' when leaving a lobby to join a game", () => {
@@ -53,7 +54,7 @@ describe('Player', () => {
         const lobby = new Lobby(2, "TestLobby");
         player.joinLobby(lobby);
 
-        const leaveLobbySpy = spyOn(player.socket, 'emit');
+        const leaveLobbySpy = jest.spyOn(player.socket, 'emit');
         player.leaveLobby(true);
 
         expect(player.currentLobby).toBeUndefined();
@@ -65,7 +66,7 @@ describe('Player', () => {
         const lobby = new Lobby(2, "TestLobby");
         player.joinLobby(lobby);
 
-        const leaveLobbySpy = spyOn(player.socket, 'emit');
+        const leaveLobbySpy = jest.spyOn(player.socket, 'emit');
         player.leaveLobby(false);
 
         expect(player.currentLobby).toBeUndefined();
@@ -77,7 +78,7 @@ describe('Player', () => {
         const player = new Player(serverSocket);
         const gameId = "TestGameId";
 
-        const gameStartedSpy = spyOn(player.socket, 'emit');
+        const gameStartedSpy = jest.spyOn(player.socket, 'emit');
         player.gameStarted(gameId);
 
         expect(player.currentGameId).toBe(gameId);
@@ -88,7 +89,7 @@ describe('Player', () => {
         const player = new Player(serverSocket);
         const chatMessage = "Hello, this is a test message";
 
-        const gameChatSpy = spyOn(player.socket, 'emit');
+        const gameChatSpy = jest.spyOn(player.socket, 'emit');
         player.gameChat(chatMessage);
 
         expect(gameChatSpy).toHaveBeenCalledWith("game_chat", chatMessage);
@@ -97,7 +98,7 @@ describe('Player', () => {
     it("should be able to emit 'game_ended' when the game ends", () => {
         const player = new Player(serverSocket);
 
-        const gameEndedSpy = spyOn(player.socket, 'emit');
+        const gameEndedSpy = jest.spyOn(player.socket, 'emit');
         player.gameEnded();
 
         expect(gameEndedSpy).toHaveBeenCalledWith("game_ended");
