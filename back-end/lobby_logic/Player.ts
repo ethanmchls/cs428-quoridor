@@ -1,18 +1,18 @@
 import { Socket } from "socket.io";
-import { LobbyTypes } from "./LobbyService";
 import { Lobby } from "./Lobby";
 import { GameId } from "./Game";
+import { generateUuid } from "util/uuid";
 
 export type PlayerId = string;
 
 export class Player {
     id: PlayerId;
-    private socket: Socket;
-    private currentLobby: Lobby | undefined;
+    socket: Socket;
+    currentLobby: Lobby | undefined;
     currentGameId: GameId | undefined;
 
     constructor (socket: Socket) {
-        this.id = "test";
+        this.id = generateUuid();
         this.socket = socket;
     }
 
@@ -43,5 +43,9 @@ export class Player {
 
     gameEnded() {
         this.socket.emit("game_ended");
+    }
+
+    isInRoom(room: string) {
+        return this.socket.rooms.has(room);
     }
 }

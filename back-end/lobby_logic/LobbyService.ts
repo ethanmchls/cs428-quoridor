@@ -1,4 +1,3 @@
-import { Socket } from "socket.io";
 import { Lobby } from "./Lobby";
 import { Player } from "./Player";
 
@@ -18,13 +17,13 @@ export class LobbyService {
 
     joinLobby(type: LobbyTypes) {
         const lobby = this.lobbies[type];
+        if (!lobby) {
+            throw Error("Unknown lobby type");
+        }
         lobby.joinLobby(this.player);
         this.player.joinLobby(lobby);
         if (lobby.isFull()) {
             lobby.createGame();
-        }
-        else {
-            
         }
     }
 }

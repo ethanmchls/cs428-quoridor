@@ -1,6 +1,6 @@
 import { Game, GameId } from "./Game";
 
-const MAX_GAMES = 50;
+export const MAX_GAMES = 50;
 
 export class Games {
 	private static instance: Games;
@@ -8,7 +8,7 @@ export class Games {
 	games: (Game | null)[];
 
 	private constructor(numgames: number) {
-		this.games = new Array(numgames);
+		this.games = new Array(numgames).fill(null);
 	}
 
 	public static getInstance() {
@@ -30,7 +30,11 @@ export class Games {
 	}
 
 	remove(gameId: GameId) {
-		this.games = this.games.filter((game) => game == null || game.id != gameId);
+		this.games = this.games.map((game) => game?.id == gameId ? null : game);
+	}
+
+	removeAll() {
+		this.games = this.games.map(() => null);
 	}
 
 	get(gameId: GameId) {

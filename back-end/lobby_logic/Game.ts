@@ -1,3 +1,4 @@
+import { generateUuid } from "util/uuid";
 import { Player } from "./Player";
 
 export type GameId = string;
@@ -7,7 +8,7 @@ export class Game {
     players: Player[];
 
     constructor(players: Player[]) {
-        this.id = "";
+        this.id = generateUuid();
         this.players = players;
         this.sendStartGame();
     }
