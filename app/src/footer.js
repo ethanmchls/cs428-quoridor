@@ -10,7 +10,7 @@ export const Footer = memo(() => {
         <div className={'footer'}>
             <div className={'footer-content'}>
                 <a href="https://github.com/ethanmchls/cs428-quoridor" className={'footer-link'}>
-                    <img src={githubLogo} className={'githublogo'}/>
+                    <img src={githubLogo} className={'githublogo'} alt=""/>
                 </a>
                 <p className={'footer-link'}>|</p>
                 <a href="mailto:samolausson@gmail.com" className={'footer-link'}>contact</a>

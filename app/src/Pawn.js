@@ -1,6 +1,7 @@
-const Pawn = ({ pawnColor }) => {
+const Pawn = ({ pawnColor, onClick, pawnID }) => {
 
   const handleClick = () => {
+    onClick(pawnID)
   };
 
   return (
