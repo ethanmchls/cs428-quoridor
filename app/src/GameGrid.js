@@ -8,12 +8,10 @@ export const GameScreen = () => {
   var pawn2 = [16, 8];
   var walls = ["1-0", "1-1", "1-2", "10-7", "11-7", "12-7"];
   return (
-    <>
     <div className='App'>
-    <GameGrid pawn1Pos={pawn1} pawn2Pos={pawn2} walls={walls} />
+      <GameGrid pawn1Pos={pawn1} pawn2Pos={pawn2} walls={walls} />
+      <Footer />
     </div>
-    <Footer />
-    </>
   );
 };
 
@@ -26,15 +24,18 @@ const GridCell = ({ pos, classes, children }) => {
 };
 
 export const GameGrid = ({ pawn1Pos, pawn2Pos, walls }) => {
-  const gridSize = 17;
+  const gridSize = 17;  // 9 cells + 8 walls = 17 x 17 grid
   // Constants used to adjust the grid cell attributes
-  const cellHeight = "h-[70px]";
-  const cellWidth = "w-[70px]";
-  const wallWidth = "w-[15px]";
-  const wallHeight = "h-[15px]";
-  const emptyWallColor = "bg-gray-200";
-  const placedWallColor = "bg-black";
-  const cellColor = "bg-gray-300";
+  const cellSize = "70";
+  const wallSize = "15";
+  const emptyWallColor = "bg-amber-900";
+  const placedWallColor = "bg-amber-600";
+  const borderColor = "border-amber-900";
+  const cellColor = "bg-orange-950";
+  const p1Color = "bg-red-500";
+  const p2Color = "bg-yellow-500";
+  // const p3Color = "bg-red-900";  // These can be used later when 4 player logic is added
+  // const p4Color = "bg-yellow-200";
 
   const renderGrid = () => {
     const grid = [];
@@ -47,16 +48,17 @@ export const GameGrid = ({ pawn1Pos, pawn2Pos, walls }) => {
         const wallColor = isPlacedWall ? `${placedWallColor}` : `${emptyWallColor}`;
 
         if (isXWall && !isYWall) {
-          row.push(<div key={`${i}-${j}`} className={`${wallWidth} ${cellHeight} ${wallColor}`}></div>);
+          // row.push(<div key={`${i}-${j}`} className={`${wallWidth} ${cellHeight} ${wallColor}`}></div>);
+          row.push(<div key={`${i}-${j}`} className={`w-[${wallSize}px] h-[${cellSize}px] ${wallColor}`}></div>);
         }
         else if (isYWall && !isXWall) {
-          row.push(<div key={`${i}-${j}`} className={`${cellWidth} ${wallHeight} ${wallColor}`}></div>);
+          row.push(<div key={`${i}-${j}`} className={`w-[${cellSize}px] h-[${wallSize}px] ${wallColor}`}></div>);
         }
         else if (isYWall && isXWall) {
-          row.push(<div key={`${i}-${j}`} className={`${wallWidth} ${wallHeight} ${wallColor}`}></div>);
+          row.push(<div key={`${i}-${j}`} className={`w-[${wallSize}px] h-[${wallSize}px] ${wallColor}`}></div>);
         }
         else {
-          row.push(<GridCell pos={`${i}-${j}`} classes={`${cellWidth} ${cellHeight} ${cellColor}`}></GridCell>)
+          row.push(<GridCell pos={`${i}-${j}`} classes={`w-[${cellSize}px] h-[${cellSize}px] ${cellColor}`}></GridCell>)
         }
       }
 
@@ -68,16 +70,16 @@ export const GameGrid = ({ pawn1Pos, pawn2Pos, walls }) => {
     const pawn2R = pawn2Pos[0];
     const pawn2C = pawn2Pos[1];
 
-    grid[pawn1R].props.children[pawn1C] = GridCell({ pos: `${pawn1R}-${pawn1C}`, classes: `${cellWidth} ${cellHeight} ${cellColor}`, children: <Pawn pawnColor="bg-blue-500" /> });
-    grid[pawn2R].props.children[pawn2C] = GridCell({ pos: `${pawn2R}-${pawn2C}`, classes: `${cellWidth} ${cellHeight} ${cellColor}`, children: <Pawn pawnColor="bg-red-500" /> });
+    grid[pawn1R].props.children[pawn1C] = GridCell({ pos: `${pawn1R}-${pawn1C}`, classes: `w-[${cellSize}px] h-${cellSize}px] ${cellColor}`, children: <Pawn pawnColor={`${p1Color}`} /> });
+    grid[pawn2R].props.children[pawn2C] = GridCell({ pos: `${pawn2R}-${pawn2C}`, classes: `w-[${cellSize}px] h-${cellSize}px] ${cellColor}`, children: <Pawn pawnColor={`${p2Color}`} /> });
     // TODO: make neighboring cells of pawns hoverable
     return grid;
   };
 
   return (
-    <div className="flex justify-center items-center h-screen">
+    <div className="flex justify-center items-center h-full mx-auto my-auto">
       <div className="w-auto flex mx-auto">
-        <div className="grid grid-cols-17 grow">{renderGrid()}
+        <div className={`grid grid-cols-17 grow rounded-md ${borderColor} border-[${wallSize}px]`}>{renderGrid()}
         </div>
       </div>
     </div>
