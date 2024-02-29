@@ -3,7 +3,7 @@ import React from 'react';
 // import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Lobby } from './Lobby';
-import { GameScreen } from './GameGrid';
+import { GameScreen } from './GameView';
 import { About } from './About';
 
 function App() {
