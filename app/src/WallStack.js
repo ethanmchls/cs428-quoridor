@@ -1,11 +1,16 @@
-const WallStack = ({player, numWalls, onClick}) => {
-  const handleClick = () => {
-    onClick();
+const WallStack = ({player, numWalls, onClick, selectedWall}) => {
+  const handleClick = (i) => {
+    onClick(i);
   };
 
   let wallStack = [];
   for (let i = 0; i < (numWalls); i++) {
-    wallStack.push(<div key={`wall-${i}`} className="h-[15px] w-[155px] bg-amber-600 hover:bg-amber-400" onClick={handleClick}></div>);
+    if (i === selectedWall) {
+      wallStack.push(<div key={`wall-${i}`} className="h-[15px] w-[155px] bg-amber-200" onClick={() => {handleClick(i)}}></div>);
+    }
+    else {
+      wallStack.push(<div key={`wall-${i}`} className="h-[15px] w-[155px] bg-amber-600 hover:bg-amber-400" onClick={() => {handleClick(i)}}></div>);
+    }
     if (i < 9) {
       wallStack.push(<div className="h-[70px] w-[155px] bg-orange-950" onClick={() => {}}></div>);
     }

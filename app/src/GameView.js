@@ -166,6 +166,8 @@ export const GameGrid = ({ player1, updatePlayer1, player2, updatePlayer2, walls
   const [cells2Clicked, setCells2Clicked] = useState(false);
   const [p1WallClicked, setP1WallClicked] = useState(false);
   const [p2WallClicked, setP2WallClicked] = useState(false);
+  const [p1SelectedWall, setP1SelectedWall] = useState(10);
+  const [p2SelectedWall, setP2SelectedWall] = useState(10);
 
   const handlePawn1Click = (pawnID) => {
     // console.log('Pawn 1 clicked: ', pawnID);
@@ -203,12 +205,21 @@ export const GameGrid = ({ player1, updatePlayer1, player2, updatePlayer2, walls
     setCells2Clicked(true);
   }
 
-  const handleP1WallClick = () => {
-    setP1WallClicked(true);
+  const handleP1WallClick = (selectedWall) => {
+    // console.log('P1 Wall clicked: ', selectedWall);
+    setP1SelectedWall(selectedWall);
+    if (p1WallClicked) {
+      setP1SelectedWall(10);
+    }
+    setP1WallClicked(!p1WallClicked);
   }
 
-  const handleP2WallClick = () => {
-    setP2WallClicked(true);
+  const handleP2WallClick = (selectedWall) => {
+    setP2SelectedWall(selectedWall);
+    if (p2WallClicked) {
+      setP2SelectedWall(10);
+    }
+    setP2WallClicked(!p2WallClicked);
   }
 
   const renderGrid = () => {
@@ -269,8 +280,9 @@ export const GameGrid = ({ player1, updatePlayer1, player2, updatePlayer2, walls
   };
 
   var grid = renderGrid();
-  var p1WallStack = <WallStack player={1} numWalls={player1.nWalls} onClick={handleP1WallClick} />;
-  var p2WallStack = <WallStack player={2} numWalls={player2.nWalls} onClick={handleP2WallClick} />;
+  console.log('Updating wall stack: ', p1SelectedWall, p2SelectedWall)
+  var p1WallStack = <WallStack player={1} numWalls={player1.nWalls} onClick={handleP1WallClick} selectedWall={p1SelectedWall} />;
+  var p2WallStack = <WallStack player={2} numWalls={player2.nWalls} onClick={handleP2WallClick} selectedWall={p2SelectedWall} />;
 
   if (pawn1Clicked) {
     for (let i = 0; i < player1.moves.length; i++) {
@@ -303,6 +315,77 @@ export const GameGrid = ({ player1, updatePlayer1, player2, updatePlayer2, walls
 
   const handleWallPlaced = (pos, player) => {
     // console.log('Wall placed: ', pos, ' by player: ', player);
+    const r = parseInt(pos.split('-')[0]);
+    const c = parseInt(pos.split('-')[1]);
+    const isVerticalWall = (r % 2 === 0);
+    const isHorizontalWall = (c % 2 === 0);
+    const isBlockedLeft = walls.includes(`${r}-${c - 1}`) || (walls.includes(`${r}-${c - 2}`) && (isHorizontalWall));
+    const isBlockedRight = walls.includes(`${r}-${c + 1}`) || (walls.includes(`${r}-${c + 2}`) && (isHorizontalWall));
+    const isBlockedUp = walls.includes(`${r - 1}-${c}`) || (walls.includes(`${r - 2}-${c}`) && (isVerticalWall));
+    const isBlockedDown = walls.includes(`${r + 1}-${c}`) || (walls.includes(`${r + 2}-${c}`) && (isVerticalWall));
+    // console.log("Walls includes: ", walls.includes(`${r}-${c + 2}`));
+    // console.log("blocked left: ", isBlockedLeft, " blocked right: ", isBlockedRight, " blocked up: ", isBlockedUp, " blocked down: ", isBlockedDown, " vertical: ", isVerticalWall, " horizontal: ", isHorizontalWall);
+
+    // Frontend logic to check if wall placement is valid. Does not check for player pawn blocking
+    // If wall is a corner, place wall horizontally by default
+    if (!isVerticalWall && !isHorizontalWall && !isBlockedLeft && !isBlockedRight && c > 1) {
+      updateWalls(`${r}-${c + 1}`);
+      updateWalls(`${r}-${c - 1}`);
+      updatePlaceableWalls(`${r}-${c + 1}`);
+      updatePlaceableWalls(`${r}-${c - 1}`);
+    }
+    // If the wall is a corner and is blocked on the left/right, place wall vertically
+    else if (!isVerticalWall && !isHorizontalWall && ((isBlockedRight || isBlockedLeft) && (!isBlockedUp && !isBlockedDown))) {
+      updateWalls(`${r - 1}-${c}`);
+      updateWalls(`${r + 1}-${c}`);
+      updatePlaceableWalls(`${r - 1}-${c}`);
+      updatePlaceableWalls(`${r + 1}-${c}`);
+    }
+    // If the wall is a vertical edge and is not blocked down, place vertically down by default
+    else if (isVerticalWall && !isHorizontalWall && r < 16 && !isBlockedDown) {
+      updateWalls(`${r + 1}-${c}`);
+      updateWalls(`${r + 2}-${c}`);
+      updatePlaceableWalls(`${r + 1}-${c}`);
+      updatePlaceableWalls(`${r + 2}-${c}`);
+    }
+    // If the wall is a vertical edge and is blocked down, place vertically up
+    else if (
+      (isVerticalWall && !isHorizontalWall && r === 16 && !isBlockedUp) ||
+      (isVerticalWall && !isHorizontalWall && r < 16 && isBlockedDown && !isBlockedUp && r > 0)
+    ) {
+      updateWalls(`${r - 1}-${c}`);
+      updateWalls(`${r - 2}-${c}`);
+      updatePlaceableWalls(`${r - 1}-${c}`);
+      updatePlaceableWalls(`${r - 2}-${c}`);
+    }
+    // If the wall is a horizontal edge and is not blocked right, place horizontally right by default
+    else if (isHorizontalWall && !isVerticalWall && c < 16 && !isBlockedRight) {
+      updateWalls(`${r}-${c + 1}`);
+      updateWalls(`${r}-${c + 2}`);
+      updatePlaceableWalls(`${r}-${c + 1}`);
+      updatePlaceableWalls(`${r}-${c + 2}`);
+    }
+    // If the wall is a horizontal edge and is blocked right, place horizontally left
+    else if (
+      (isHorizontalWall && !isVerticalWall && c === 16 && !isBlockedLeft) || 
+      (isHorizontalWall && !isVerticalWall && c < 16 && isBlockedRight && !isBlockedLeft && c > 0)
+    ) {
+      updateWalls(`${r}-${c - 1}`);
+      updateWalls(`${r}-${c - 2}`);
+      updatePlaceableWalls(`${r}-${c - 1}`);
+      updatePlaceableWalls(`${r}-${c - 2}`);
+    }
+    // If the wall is blocked otherwise, do not place the wall
+    else {
+      // console.log('Invalid wall placement');
+      //TODO handle invalid wall placement
+      setP1SelectedWall(10);
+      setP2SelectedWall(10);
+      setP1WallClicked(false);
+      setP2WallClicked(false);
+      return;
+    }
+
     updateWalls(pos);
     updatePlaceableWalls(pos);
     if (player === 1) {
