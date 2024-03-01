@@ -379,8 +379,6 @@ export const GameGrid = ({ player1, updatePlayer1, player2, updatePlayer2, walls
     else {
       // console.log('Invalid wall placement');
       //TODO handle invalid wall placement
-      setP1SelectedWall(10);
-      setP2SelectedWall(10);
       setP1WallClicked(false);
       setP2WallClicked(false);
       return;
@@ -388,6 +386,8 @@ export const GameGrid = ({ player1, updatePlayer1, player2, updatePlayer2, walls
 
     updateWalls(pos);
     updatePlaceableWalls(pos);
+    setP1SelectedWall(10);
+    setP2SelectedWall(10);
     if (player === 1) {
       if (player1.nWalls > 0) {
         subtractWall(player1);
