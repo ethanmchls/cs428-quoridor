@@ -381,6 +381,8 @@ export const GameGrid = ({ player1, updatePlayer1, player2, updatePlayer2, walls
       //TODO handle invalid wall placement
       setP1WallClicked(false);
       setP2WallClicked(false);
+      setP1SelectedWall(10);
+      setP2SelectedWall(10);
       return;
     }
 
