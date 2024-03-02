@@ -172,13 +172,13 @@ export const GameGrid = ({ player1, updatePlayer1, player2, updatePlayer2, walls
   const handlePawn1Click = (pawnID) => {
     // console.log('Pawn 1 clicked: ', pawnID);
     setCells1Clicked(false);
-    setPawn1Clicked(true);
+    setPawn1Clicked(!pawn1Clicked);
   };
 
   const handlePawn2Click = (pawnID) => {
     // console.log('Pawn 2 clicked: ', pawnID);
     setCells2Clicked(false);
-    setPawn2Clicked(true);
+    setPawn2Clicked(!pawn2Clicked);
   };
 
   const handleCells1Click = (pos) => {
