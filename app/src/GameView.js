@@ -346,7 +346,7 @@ export const GameGrid = ({ player1, updatePlayer1, player2, updatePlayer2, walls
 
     // Frontend logic to check if wall placement is valid. Does not check for player pawn blocking
     // If wall is a corner, place wall horizontally by default
-    if (!isVerticalWall && !isHorizontalWall && !isBlockedLeft && !isBlockedRight && c > 1) {
+    if (!isVerticalWall && !isHorizontalWall && !isBlockedLeft && !isBlockedRight && c > 0) {
       updateWalls(`${r}-${c + 1}`);
       updateWalls(`${r}-${c - 1}`);
       updatePlaceableWalls(`${r}-${c + 1}`);
