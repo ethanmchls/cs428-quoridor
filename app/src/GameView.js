@@ -11,25 +11,29 @@ class Player {
     this.pawnPos = pawnPos;
     this.nWalls = nWalls;
     this.moves = [];
-    this.getAdjacentCells = () => {
+    this.getAdjacentCells = (placedWalls) => {
       let r = this.pawnPos[0];
       let c = this.pawnPos[1];
       let moves = [];
-      if (r > 0) {
+      let isBlockedLeft = placedWalls.includes(`${r}-${c - 1}`);
+      let isBlockedRight = placedWalls.includes(`${r}-${c + 1}`);
+      let isBlockedUp = placedWalls.includes(`${r - 1}-${c}`);
+      let isBlockedDown = placedWalls.includes(`${r + 1}-${c}`);
+      if (r > 0 && !isBlockedUp) {
         moves.push(`${r - 2}-${c}`);
       }
-      if (r < 16) {
+      if (r < 16 && !isBlockedDown) {
         moves.push(`${r + 2}-${c}`);
       }
-      if (c > 0) {
+      if (c > 0 && !isBlockedLeft) {
         moves.push(`${r}-${c - 2}`);
       }
-      if (c < 16) {
+      if (c < 16 && !isBlockedRight) {
         moves.push(`${r}-${c + 2}`);
       }
       this.moves = moves;
     }
-    this.getAdjacentCells();
+    this.getAdjacentCells([]);
   }
 }
 
@@ -141,6 +145,17 @@ export const GameGrid = ({ player1, updatePlayer1, player2, updatePlayer2, walls
     }
   }
 
+  const updateBlockedMoves = (player) => {
+    const tmp = player;
+    tmp.getAdjacentCells(walls);
+    if (player.playerNum === 1) {
+      updatePlayer1(tmp);
+    }
+    else {
+      updatePlayer2(tmp);
+    }
+  }
+
   const gridSize = 17;  // 9 cells + 8 walls = 17 x 17 grid
   // Constants used to adjust the grid cell attributes
   const cellHeight = "h-[70px]";
@@ -169,6 +184,9 @@ export const GameGrid = ({ player1, updatePlayer1, player2, updatePlayer2, walls
   const [p1SelectedWall, setP1SelectedWall] = useState(10);
   const [p2SelectedWall, setP2SelectedWall] = useState(10);
 
+  updateBlockedMoves(player1);
+  updateBlockedMoves(player2);
+
   const handlePawn1Click = (pawnID) => {
     // console.log('Pawn 1 clicked: ', pawnID);
     setCells1Clicked(false);
@@ -187,7 +205,7 @@ export const GameGrid = ({ player1, updatePlayer1, player2, updatePlayer2, walls
     const c = parseInt(pos.split('-')[1]);
     let player = player1;
     player.pawnPos = [r, c];
-    player.getAdjacentCells();
+    player.getAdjacentCells(walls);
     updatePlayer1(player);
     setPawn1Clicked(false);
     setCells1Clicked(true);
@@ -199,7 +217,7 @@ export const GameGrid = ({ player1, updatePlayer1, player2, updatePlayer2, walls
     const c = parseInt(pos.split('-')[1]);
     let player = player2;
     player.pawnPos = [r, c];
-    player.getAdjacentCells();
+    player.getAdjacentCells(walls);
     updatePlayer2(player);
     setPawn2Clicked(false);
     setCells2Clicked(true);
