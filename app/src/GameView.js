@@ -83,7 +83,7 @@ export const GameScreen = () => {
 
   return (
     <>
-    <div className='App bg-[#7d543c]'>
+    <div className='App bg-[#7d543c] min-w-max'>
       <GameGrid
         player1={player1}
         updatePlayer1={updatePlayer1}
@@ -158,15 +158,16 @@ export const GameGrid = ({ player1, updatePlayer1, player2, updatePlayer2, walls
 
   const gridSize = 17;  // 9 cells + 8 walls = 17 x 17 grid
   // Constants used to adjust the grid cell attributes
-  const cellHeight = "h-[70px]";
-  const cellWidth = "w-[70px]";
-  const wallWidth = "w-[15px]";
-  const wallHeight = "h-[15px]";
+  const cellHeight = "xl:h-[70px] lg:h-[50px] h-[30px]";
+  const cellWidth = "xl:w-[70px] lg:w-[50px] w-[30px]";
+  const wallWidth = "xl:w-[15px] lg:w-[10px] w-[8px]";
+  const wallHeight = "xl:h-[15px] lg:h-[10px] h-[8px]";
+  const wallStackWidth = "xl:w-[155px] lg:w-[100px] w-[80px]"
   const emptyWallColor = "bg-amber-900";
   const emptyWallColorHl = "bg-amber-900 hover:bg-amber-600";
   const placedWallColor = "bg-amber-600";
   // const borderWidth = "border-l-[15px] border-r-[15px] border-t-[50px] border-b-[50px]";
-  const borderWidth = "border-[15px]";
+  const borderWidth = "xl:border-[15px] lg:border-[10px] border-[8px]";
   const borderColor = "border-orange-950";
   const cellColor = "bg-orange-950";
   const cellColorHl = "bg-orange-300"
@@ -299,8 +300,8 @@ export const GameGrid = ({ player1, updatePlayer1, player2, updatePlayer2, walls
 
   var grid = renderGrid();
   console.log('Updating wall stack: ', p1SelectedWall, p2SelectedWall)
-  var p1WallStack = <WallStack player={1} numWalls={player1.nWalls} onClick={handleP1WallClick} selectedWall={p1SelectedWall} />;
-  var p2WallStack = <WallStack player={2} numWalls={player2.nWalls} onClick={handleP2WallClick} selectedWall={p2SelectedWall} />;
+  var p1WallStack = <WallStack player={1} numWalls={player1.nWalls} onClick={handleP1WallClick} selectedWall={p1SelectedWall} wallHeight={wallHeight} wallWidth={wallStackWidth} wallPadHeight={cellHeight} />;
+  var p2WallStack = <WallStack player={2} numWalls={player2.nWalls} onClick={handleP2WallClick} selectedWall={p2SelectedWall} wallHeight={wallHeight} wallWidth={wallStackWidth} wallPadHeight={cellHeight} />;
 
   if (pawn1Clicked) {
     for (let i = 0; i < player1.moves.length; i++) {
@@ -481,7 +482,7 @@ export const GameGrid = ({ player1, updatePlayer1, player2, updatePlayer2, walls
         <div className={`flex justify-center text-amber-600 font-bold text-lg w-full ${cellColor}`}>Player 1</div>
         <div className={`w-auto flex flex-row my-auto`}>
           {p1WallStack}
-          <div className={`border-[15px] border-l-black border-r-black border-t-amber-900 border-b-amber-900`}>
+          <div className={`${borderWidth} border-l-black border-r-black border-t-amber-900 border-b-amber-900`}>
             <div className={`grid grid-cols-17 grow`}>{grid}</div>
           </div>
           {p2WallStack}
