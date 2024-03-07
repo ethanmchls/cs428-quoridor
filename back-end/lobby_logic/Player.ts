@@ -2,7 +2,7 @@ import { Socket } from "socket.io";
 import { Lobby } from "./Lobby";
 import { GameId } from "./Game";
 import { generateUuid } from "../util/uuid";
-import { LobbySendType } from "./send-types";
+import { GameSendType, LobbySendType } from "./send-types";
 
 export type PlayerId = string;
 
@@ -53,6 +53,10 @@ export class Player {
 
     sendLobbies(lobbies: LobbySendType[]) {
         this.socket.emit("lobbies", lobbies);
+    }
+
+    currentGameData(gameData: GameSendType) {
+        this.socket.emit("newGameData", gameData);
     }
 
     toShareable() {

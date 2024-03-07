@@ -1,14 +1,13 @@
-import { QuoridorSpace } from "./QuoridorSpace";
+import { WallLocation } from "./QuoridorMove";
 
 export class QuoridorBoard {
-    spaces: QuoridorSpace[][] = [];
+    walls: WallLocation[];
 
     constructor () {
-        for (let y = 0; y < 9; y++) {
-            this.spaces.push([]);
-            for (let x = 0; x < 9; x++) {
-                this.spaces[y].push(new QuoridorSpace());
-            }
-        }
+        this.walls = [];
+    }
+
+    hasWall(r: number, c: number): boolean {
+        return this.walls.some((w) => w.r === r && w.c === c);
     }
 }

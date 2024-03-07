@@ -5,6 +5,9 @@ import path from "path";
 import cors from "cors";
 import { Player } from "./lobby_logic/Player";
 import { LobbyService, LobbyTypes } from "./lobby_logic/LobbyService";
+import { QuoridorMove } from "logic/QuoridorMove";
+import { Games } from "lobby_logic/Games";
+import { Game } from "lobby_logic/Game";
 
 const app = express();
 
@@ -46,6 +49,11 @@ io.on('connection', (socket) => {
 		}
 	});
 
+	socket.on('makeMove', (move: QuoridorMove) => {
+		const game = getCurrentGame(player);
+		game.takeTurn(player, move);
+	});
+
 	socket.on('joinLobby', (type: LobbyTypes) => {
 		try {
 			lobbyService.joinLobby(player, type);
@@ -60,6 +68,17 @@ io.on('connection', (socket) => {
 		lobbyService.incrementConnectedPlayers(-1);
 	});
 });
+
+function getCurrentGame(player: Player): Game {
+	if (!player.currentGameId) {
+		throw new Error("You are not currently in a game.");
+	}
+	const game = Games.getInstance().get(player.currentGameId);
+	if (!game) {
+		throw new Error("Could not find the current game.");
+	}
+	return game;
+}
 
 function handleError(err: any, socket: Socket) {
 	console.error("Handling error: ", err);
