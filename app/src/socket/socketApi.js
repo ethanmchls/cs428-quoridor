@@ -2,11 +2,14 @@ import { socket } from "./socket";
 
 const getLobbyName = "getLobbies";
 const joinLobbyName = "joinLobby";
+const makeMoveName = "makeMove";
+
 const connectedPlayersEvent = "connectedPlayers";
 const getLobbiesEvent = "lobbies";
 const gameEndedEvent = "gameEnded";
 const gameStartedEvent = "gameStarted";
 const leftLobbyEvent = "leftLobby";
+const newGameDataEvent = "newGameData";
 
 /**
  * Represents the structure of a lobby.
@@ -15,6 +18,35 @@ const leftLobbyEvent = "leftLobby";
  * @property {number} maxPlayers - The maximum number of players allowed in the lobby.
  * @property {Object[]} currentPlayers - An array containing objects representing the current players in the lobby.
  * @property {string} currentPlayers.id - The unique identifier of a player.
+ */
+
+/**
+ * Interface for a Quoridor move, which can be either a pawn move or a wall move.
+ * @typedef {Object} GameData
+ * @property {number} currentTurn
+ * @property {Array<PawnLocation>} pawns - The location of the pawn move.
+ * @property {Array<WallLocation>} walls - The location of the wall move.
+ */
+
+/**
+ * Interface for a Quoridor move, which can be either a pawn move or a wall move.
+ * @typedef {Object} QuoridorMove
+ * @property {PawnLocation} [pawnMove] - The location of the pawn move.
+ * @property {WallLocation} [wallMove] - The location of the wall move.
+ */
+
+/**
+ * Interface for the location of a pawn on the Quoridor board.
+ * @typedef {Object} PawnLocation
+ * @property {number} r - The row number of the pawn's location.
+ * @property {number} c - The column number of the pawn's location.
+ */
+
+/**
+ * Interface for the location of a wall on the Quoridor board.
+ * @typedef {Object} WallLocation
+ * @property {number} r - The row number of the wall's location.
+ * @property {number} c - The column number of the wall's location.
  */
 
 /**
@@ -31,6 +63,14 @@ export function getLobbies() {
  */
 export function joinLobby(twoPlayer = true) {
     socket.emit(joinLobbyName, twoPlayer ? "twoPlayer" : "fourPlayer");
+}
+
+/**
+ * Makes a move for the current player.
+ * @param {QuoridorMove} - Move the player wants to make.
+ */
+export function makeMove(move) {
+    socket.emit(makeMoveName, move);
 }
 
 /**
@@ -79,6 +119,14 @@ export function onSomeoneLeftLobby(f) {
 }
 
 /**
+ *
+ * @param {function(GameData): void} f - A function that is called when new game data is received.
+ */
+export function onNewGameData(f) {
+    socket.on(newGameDataEvent, data);
+}
+
+/**
  * Removes the listener for the "connectedPlayers" event.
  *
  * @param {function(number): void} f - The function to be removed from the listeners.
@@ -121,4 +169,8 @@ export function offGameStarted(f) {
  */
 export function offSomeoneLeftLobby(f) {
     socket.off(leftLobbyEvent, f);
+}
+
+export function offNewGameData(f) {
+    socket.off(newGameDataEvent, f);
 }
