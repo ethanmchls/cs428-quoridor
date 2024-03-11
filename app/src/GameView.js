@@ -82,7 +82,6 @@ export const GameScreen = () => {
   }
 
   return (
-    <>
     <div className='App bg-[#7d543c] min-w-max'>
       <GameGrid
         player1={player1}
@@ -95,7 +94,6 @@ export const GameScreen = () => {
         updatePlaceableWalls={updatePlaceableWalls}/>
       <Footer />
     </div>
-    </>
   );
 };
 
@@ -163,17 +161,19 @@ export const GameGrid = ({ player1, updatePlayer1, player2, updatePlayer2, walls
   const wallWidth = "xl:w-[15px] lg:w-[10px] w-[8px]";
   const wallHeight = "xl:h-[15px] lg:h-[10px] h-[8px]";
   const wallStackWidth = "xl:w-[155px] lg:w-[100px] w-[80px]"
+  const clickedWallColor = "bg-amber-200";
+  const hoveredWallColor = "hover:bg-amber-400";
   const emptyWallColor = "bg-amber-900";
   const emptyWallColorHl = "bg-amber-900 hover:bg-amber-600";
   const placedWallColor = "bg-amber-600";
-  // const borderWidth = "border-l-[15px] border-r-[15px] border-t-[50px] border-b-[50px]";
   const borderWidth = "xl:border-[15px] lg:border-[10px] border-[8px]";
   const borderColor = "border-orange-950";
   const cellColor = "bg-orange-950";
   const cellColorHl = "bg-orange-300"
   const p1Color = "bg-red-500";
   const p2Color = "bg-yellow-500";
-  // const p3Color = "bg-red-900";  // These can be used later when 4 player logic is added
+  // These can be used later when 4 player logic is added:
+  // const p3Color = "bg-red-900";
   // const p4Color = "bg-yellow-200";
 
   const [pawn1Clicked, setPawn1Clicked] = useState(false);
@@ -189,19 +189,16 @@ export const GameGrid = ({ player1, updatePlayer1, player2, updatePlayer2, walls
   updateBlockedMoves(player2);
 
   const handlePawn1Click = (pawnID) => {
-    // console.log('Pawn 1 clicked: ', pawnID);
     setCells1Clicked(false);
     setPawn1Clicked(!pawn1Clicked);
   };
 
   const handlePawn2Click = (pawnID) => {
-    // console.log('Pawn 2 clicked: ', pawnID);
     setCells2Clicked(false);
     setPawn2Clicked(!pawn2Clicked);
   };
 
   const handleCells1Click = (pos) => {
-    // console.log('Cell clicked: ', pos)
     const r = parseInt(pos.split('-')[0]);
     const c = parseInt(pos.split('-')[1]);
     let player = player1;
@@ -213,7 +210,6 @@ export const GameGrid = ({ player1, updatePlayer1, player2, updatePlayer2, walls
   }
 
   const handleCells2Click = (pos) => {
-    // console.log('Cell clicked: ', pos)
     const r = parseInt(pos.split('-')[0]);
     const c = parseInt(pos.split('-')[1]);
     let player = player2;
@@ -225,7 +221,6 @@ export const GameGrid = ({ player1, updatePlayer1, player2, updatePlayer2, walls
   }
 
   const handleP1WallClick = (selectedWall) => {
-    // console.log('P1 Wall clicked: ', selectedWall);
     setP1SelectedWall(selectedWall);
     if (p1WallClicked) {
       setP1SelectedWall(10);
@@ -242,7 +237,6 @@ export const GameGrid = ({ player1, updatePlayer1, player2, updatePlayer2, walls
   }
 
   const renderGrid = () => {
-    // console.log('Rendering grid');
     const pawn1R = player1.pawnPos[0];
     const pawn1C = player1.pawnPos[1];
     const pawn2R = player2.pawnPos[0];
@@ -257,34 +251,104 @@ export const GameGrid = ({ player1, updatePlayer1, player2, updatePlayer2, walls
         const wallColor = isPlacedWall ? `${placedWallColor}` : `${emptyWallColor}`;
 
         if (i === pawn1R && j === pawn1C) {
-          row.push(<GridCell pos={`${i}-${j}`} classes={`${cellWidth} ${cellHeight} ${cellColor}`} children={<Pawn pawnColor={`${p1Color}`} onClick={handlePawn1Click} pawnID={`${i}-${j}`} />} onClick={() => {}} />);
+          row.push(
+              <GridCell
+                pos={`${i}-${j}`}
+                classes={`${cellWidth} ${cellHeight} ${cellColor}`}
+                children={<Pawn pawnColor={`${p1Color}`} onClick={handlePawn1Click} pawnID={`${i}-${j}`} />}
+                onClick={() => {}}
+              />
+            );
         }
         else if (i === pawn2R && j === pawn2C) {
-          row.push(<GridCell pos={`${i}-${j}`} classes={`${cellWidth} ${cellHeight} ${cellColor}`} children={<Pawn pawnColor={`${p2Color}`} onClick={handlePawn2Click} pawnID={`${i}-${j}`} />} onClick={() => {}} />);
+          row.push(
+              <GridCell
+                pos={`${i}-${j}`}
+                classes={`${cellWidth} ${cellHeight} ${cellColor}`}
+                children={<Pawn pawnColor={`${p2Color}`}
+                onClick={handlePawn2Click}
+                pawnID={`${i}-${j}`} />}
+                onClick={() => {}}
+              />
+            );
         }
         else {
           if (isXWall && !isYWall) {
             if (isPlacedWall) {
-              row.push(<GridWall key={`${i}-${j}`} pos={`${i}-${j}`} classes={``} children={<PlacedWall classes={`${wallWidth} ${cellHeight} ${wallColor}`} />} onClick={() => {}} player={0}></GridWall>);
+              row.push(
+                  <GridWall
+                    key={`${i}-${j}`}
+                    pos={`${i}-${j}`}
+                    classes={``}
+                    children={<PlacedWall classes={`${wallWidth} ${cellHeight} ${wallColor}`} />}
+                    onClick={() => {}}
+                    player={0}
+                  />
+                );
             }
             else {
-              row.push(<GridWall key={`${i}-${j}`} pos={`${i}-${j}`} classes={`${wallWidth} ${cellHeight} ${wallColor}`} children={<div></div>} onClick={() => {}} player={0}></GridWall>);
+              row.push(
+                  <GridWall
+                    key={`${i}-${j}`}
+                    pos={`${i}-${j}`}
+                    classes={`${wallWidth} ${cellHeight} ${wallColor}`}
+                    children={<div></div>}
+                    onClick={() => {}}
+                    player={0}
+                  />
+                );
             }
           }
           else if (isYWall && !isXWall) {
             if (isPlacedWall) {
-              row.push(<GridWall key={`${i}-${j}`} pos={`${i}-${j}`} classes={``} children={<PlacedWall classes={`${cellWidth} ${wallHeight} ${wallColor}`} />} onClick={() => {}} player={0}></GridWall>);
+              row.push(
+                  <GridWall
+                    key={`${i}-${j}`}
+                    pos={`${i}-${j}`}
+                    classes={``}
+                    children={<PlacedWall classes={`${cellWidth} ${wallHeight} ${wallColor}`} />}
+                    onClick={() => {}}
+                    player={0}
+                  />
+                );
             }
             else {
-              row.push(<GridWall key={`${i}-${j}`} pos={`${i}-${j}`} classes={`${cellWidth} ${wallHeight} ${wallColor}`} children={<div></div>} onClick={() => {}} player={0}></GridWall>);
+              row.push(
+                  <GridWall
+                    key={`${i}-${j}`}
+                    pos={`${i}-${j}`}
+                    classes={`${cellWidth} ${wallHeight} ${wallColor}`}
+                    children={<div></div>}
+                    onClick={() => {}}
+                    player={0}
+                  />
+                );
             }
           }
           else if (isYWall && isXWall) {
             if (isPlacedWall) {
-              row.push(<GridWall key={`${i}-${j}`} pos={`${i}-${j}`} classes={``} children={<PlacedWall classes={`${wallWidth} ${wallHeight} ${wallColor}`} />} onClick={() => {}} player={0}></GridWall>);
+              row.push(
+                  <GridWall
+                    key={`${i}-${j}`}
+                    pos={`${i}-${j}`}
+                    classes={``}
+                    children={<PlacedWall classes={`${wallWidth} ${wallHeight} ${wallColor}`} />}
+                    onClick={() => {}}
+                    player={0}
+                  />
+                );
             }
             else {
-              row.push(<GridWall key={`${i}-${j}`} pos={`${i}-${j}`} classes={`${wallWidth} ${wallHeight} ${wallColor}`} children={<div></div>} onClick={() => {}} player={0}></GridWall>);
+              row.push(
+                  <GridWall
+                    key={`${i}-${j}`}
+                    pos={`${i}-${j}`}
+                    classes={`${wallWidth} ${wallHeight} ${wallColor}`}
+                    children={<div></div>}
+                    onClick={() => {}}
+                    player={0}
+                  />
+                );
             }
           }
           else {
@@ -300,8 +364,36 @@ export const GameGrid = ({ player1, updatePlayer1, player2, updatePlayer2, walls
 
   var grid = renderGrid();
   console.log('Updating wall stack: ', p1SelectedWall, p2SelectedWall)
-  var p1WallStack = <WallStack player={1} numWalls={player1.nWalls} onClick={handleP1WallClick} selectedWall={p1SelectedWall} wallHeight={wallHeight} wallWidth={wallStackWidth} wallPadHeight={cellHeight} />;
-  var p2WallStack = <WallStack player={2} numWalls={player2.nWalls} onClick={handleP2WallClick} selectedWall={p2SelectedWall} wallHeight={wallHeight} wallWidth={wallStackWidth} wallPadHeight={cellHeight} />;
+  var p1WallStack =
+    <WallStack
+      player={1}
+      numWalls={player1.nWalls}
+      onClick={handleP1WallClick}
+      selectedWall={p1SelectedWall}
+      wallHeight={wallHeight}
+      wallWidth={wallStackWidth}
+      wallPadHeight={cellHeight}
+      colorClicked={clickedWallColor}
+      colorHover={hoveredWallColor}
+      colorWall={placedWallColor}
+      colorWallEmpty={emptyWallColor}
+      colorCell={cellColor}
+    />;
+  var p2WallStack =
+    <WallStack
+      player={2}
+      numWalls={player2.nWalls}
+      onClick={handleP2WallClick}
+      selectedWall={p2SelectedWall}
+      wallHeight={wallHeight}
+      wallWidth={wallStackWidth}
+      wallPadHeight={cellHeight}
+      colorClicked={clickedWallColor}
+      colorHover={hoveredWallColor}
+      colorWall={placedWallColor}
+      colorWallEmpty={emptyWallColor}
+      colorCell={cellColor}
+    />;
 
   if (pawn1Clicked) {
     for (let i = 0; i < player1.moves.length; i++) {
@@ -333,7 +425,6 @@ export const GameGrid = ({ player1, updatePlayer1, player2, updatePlayer2, walls
   }
 
   const handleWallPlaced = (pos, player) => {
-    // console.log('Wall placed: ', pos, ' by player: ', player);
     const r = parseInt(pos.split('-')[0]);
     const c = parseInt(pos.split('-')[1]);
     const isVerticalWall = (r % 2 === 0);
@@ -342,8 +433,6 @@ export const GameGrid = ({ player1, updatePlayer1, player2, updatePlayer2, walls
     const isBlockedRight = walls.includes(`${r}-${c + 1}`) || (walls.includes(`${r}-${c + 2}`) && (isHorizontalWall));
     const isBlockedUp = walls.includes(`${r - 1}-${c}`) || (walls.includes(`${r - 2}-${c}`) && (isVerticalWall));
     const isBlockedDown = walls.includes(`${r + 1}-${c}`) || (walls.includes(`${r + 2}-${c}`) && (isVerticalWall));
-    // console.log("Walls includes: ", walls.includes(`${r}-${c + 2}`));
-    // console.log("blocked left: ", isBlockedLeft, " blocked right: ", isBlockedRight, " blocked up: ", isBlockedUp, " blocked down: ", isBlockedDown, " vertical: ", isVerticalWall, " horizontal: ", isHorizontalWall);
 
     // Frontend logic to check if wall placement is valid. Does not check for player pawn blocking
     // If wall is a corner, place wall horizontally by default
@@ -396,8 +485,6 @@ export const GameGrid = ({ player1, updatePlayer1, player2, updatePlayer2, walls
     }
     // If the wall is blocked otherwise, do not place the wall
     else {
-      // console.log('Invalid wall placement');
-      //TODO handle invalid wall placement
       setP1WallClicked(false);
       setP2WallClicked(false);
       setP1SelectedWall(10);
@@ -424,7 +511,6 @@ export const GameGrid = ({ player1, updatePlayer1, player2, updatePlayer2, walls
   }
 
   if (p1WallClicked) {
-    // console.log('P1 Wall clicked');
     for (let i = 0; i < placeableWalls.length; i++) {
       let r = parseInt(placeableWalls[i].split('-')[0]);
       let c = parseInt(placeableWalls[i].split('-')[1]);
@@ -433,24 +519,47 @@ export const GameGrid = ({ player1, updatePlayer1, player2, updatePlayer2, walls
       const isPlacedWall = walls.includes(`${r}-${c}`);
       if (isXWall && !isYWall) {
         if (!isPlacedWall) {
-          grid[r].props.children[c] = <GridWall key={`${r}-${c}`} pos={`${r}-${c}`} classes={``} children={<PlacedWall classes={`${wallWidth} ${cellHeight} ${emptyWallColorHl}`} />} onClick={handleWallPlaced} player={1}></GridWall>;
+          grid[r].props.children[c] =
+            <GridWall
+              key={`${r}-${c}`}
+              pos={`${r}-${c}`}
+              classes={``}
+              children={<PlacedWall classes={`${wallWidth} ${cellHeight} ${emptyWallColorHl}`} />}
+              onClick={handleWallPlaced}
+              player={1}
+            />;
         }
       }
       else if (isYWall && !isXWall) {
         if (!isPlacedWall) {
-          grid[r].props.children[c] = <GridWall key={`${r}-${c}`} pos={`${r}-${c}`} classes={``} children={<PlacedWall classes={`${cellWidth} ${wallHeight} ${emptyWallColorHl}`} />} onClick={handleWallPlaced} player={1}></GridWall>;
+          grid[r].props.children[c] =
+            <GridWall
+              key={`${r}-${c}`}
+              pos={`${r}-${c}`}
+              classes={``}
+              children={<PlacedWall classes={`${cellWidth} ${wallHeight} ${emptyWallColorHl}`} />}
+              onClick={handleWallPlaced}
+              player={1}
+            />;
         }
       }
       else if (isYWall && isXWall) {
         if (!isPlacedWall) {
-          grid[r].props.children[c] = <GridWall key={`${r}-${c}`} pos={`${r}-${c}`} classes={``} children={<PlacedWall classes={`${wallWidth} ${wallHeight} ${emptyWallColorHl}`} />} onClick={handleWallPlaced} player={1}></GridWall>;
+          grid[r].props.children[c] =
+            <GridWall
+              key={`${r}-${c}`}
+              pos={`${r}-${c}`}
+              classes={``}
+              children={<PlacedWall classes={`${wallWidth} ${wallHeight} ${emptyWallColorHl}`} />}
+              onClick={handleWallPlaced}
+              player={1}
+            />;
         }
       }
     }
   }
 
   if (p2WallClicked) {
-    // console.log('P2 Wall clicked');
     for (let i = 0; i < placeableWalls.length; i++) {
       let r = parseInt(placeableWalls[i].split('-')[0]);
       let c = parseInt(placeableWalls[i].split('-')[1]);
@@ -460,17 +569,41 @@ export const GameGrid = ({ player1, updatePlayer1, player2, updatePlayer2, walls
 
       if (isXWall && !isYWall) {
         if (!isPlacedWall) {
-          grid[r].props.children[c] = <GridWall key={`${r}-${c}`} pos={`${r}-${c}`} classes={``} children={<PlacedWall classes={`${wallWidth} ${cellHeight} ${emptyWallColorHl}`} />} onClick={handleWallPlaced} player={2}></GridWall>;
+          grid[r].props.children[c] =
+            <GridWall
+              key={`${r}-${c}`}
+              pos={`${r}-${c}`}
+              classes={``}
+              children={<PlacedWall classes={`${wallWidth} ${cellHeight} ${emptyWallColorHl}`} />}
+              onClick={handleWallPlaced}
+              player={2}
+            />;
         }
       }
       else if (isYWall && !isXWall) {
         if (!isPlacedWall) {
-          grid[r].props.children[c] = <GridWall key={`${r}-${c}`} pos={`${r}-${c}`} classes={``} children={<PlacedWall classes={`${cellWidth} ${wallHeight} ${emptyWallColorHl}`} />} onClick={handleWallPlaced} player={2}></GridWall>;
+          grid[r].props.children[c] =
+            <GridWall
+              key={`${r}-${c}`}
+              pos={`${r}-${c}`}
+              classes={``}
+              children={<PlacedWall classes={`${cellWidth} ${wallHeight} ${emptyWallColorHl}`} />}
+              onClick={handleWallPlaced}
+              player={2}
+            />;
         }
       }
       else if (isYWall && isXWall) {
         if (!isPlacedWall) {
-          grid[r].props.children[c] = <GridWall key={`${r}-${c}`} pos={`${r}-${c}`} classes={``} children={<PlacedWall classes={`${wallWidth} ${wallHeight} ${emptyWallColorHl}`} />} onClick={handleWallPlaced} player={2}></GridWall>;
+          grid[r].props.children[c] =
+            <GridWall
+              key={`${r}-${c}`}
+              pos={`${r}-${c}`}
+              classes={``}
+              children={<PlacedWall classes={`${wallWidth} ${wallHeight} ${emptyWallColorHl}`} />}
+              onClick={handleWallPlaced}
+              player={2}
+            />;
         }
       }
     }
