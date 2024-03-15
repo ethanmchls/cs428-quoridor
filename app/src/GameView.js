@@ -71,14 +71,16 @@ export const GameScreen = () => {
     setPlayer2(player);
   }
   const updateWalls = (wall) => {
-    var tmp = walls;
-    tmp.push(wall);
-    setWalls(tmp);
+    // var tmp = walls;
+    // tmp.push(wall);
+    // setWalls(tmp);
+    setWalls((prevWalls) => [...prevWalls, wall]);
   }
   const updatePlaceableWalls = (wall) => {
-    var tmp = placeableWalls;
-    tmp.splice(wall, 1);
-    setPlaceableWalls(tmp);
+    // var tmp = placeableWalls;
+    // tmp.splice(wall, 1);
+    // setPlaceableWalls(tmp);
+    setPlaceableWalls((prevPlaceableWalls) => prevPlaceableWalls.filter((_, i) => i !== wall));
   }
 
   return (
@@ -176,6 +178,7 @@ export const GameGrid = ({ player1, updatePlayer1, player2, updatePlayer2, walls
   // const p3Color = "bg-red-900";
   // const p4Color = "bg-yellow-200";
 
+  // Maybe have one state with the currently selected thing? 
   const [pawn1Clicked, setPawn1Clicked] = useState(false);
   const [pawn2Clicked, setPawn2Clicked] = useState(false);
   const [cells1Clicked, setCells1Clicked] = useState(false);
@@ -221,17 +224,22 @@ export const GameGrid = ({ player1, updatePlayer1, player2, updatePlayer2, walls
   }
 
   const handleP1WallClick = (selectedWall) => {
-    setP1SelectedWall(selectedWall);
     if (p1WallClicked) {
       setP1SelectedWall(10);
     }
+    else {
+      setP1SelectedWall(selectedWall);
+    }
+
     setP1WallClicked(!p1WallClicked);
   }
 
   const handleP2WallClick = (selectedWall) => {
-    setP2SelectedWall(selectedWall);
     if (p2WallClicked) {
       setP2SelectedWall(10);
+    }
+    else {
+      setP2SelectedWall(selectedWall);
     }
     setP2WallClicked(!p2WallClicked);
   }
@@ -255,7 +263,7 @@ export const GameGrid = ({ player1, updatePlayer1, player2, updatePlayer2, walls
               <GridCell
                 pos={`${i}-${j}`}
                 classes={`${cellWidth} ${cellHeight} ${cellColor}`}
-                children={<Pawn pawnColor={`${p1Color}`} onClick={handlePawn1Click} pawnID={`${i}-${j}`} />}
+                children={<Pawn pawnColor={p1Color} onClick={handlePawn1Click} pawnID={`${i}-${j}`} />}
                 onClick={() => {}}
               />
             );
@@ -265,7 +273,7 @@ export const GameGrid = ({ player1, updatePlayer1, player2, updatePlayer2, walls
               <GridCell
                 pos={`${i}-${j}`}
                 classes={`${cellWidth} ${cellHeight} ${cellColor}`}
-                children={<Pawn pawnColor={`${p2Color}`}
+                children={<Pawn pawnColor={p2Color}
                 onClick={handlePawn2Click}
                 pawnID={`${i}-${j}`} />}
                 onClick={() => {}}

@@ -69,6 +69,8 @@ export class QuoridorGame {
         currentPlayer.pawn.c = move.c;
     }
 
+    // handle case of trapped pawn
+
     handleWallMove(currentPlayer: QuoridorPlayer, move: WallLocation) {
         if (currentPlayer.placedWalls.length >= MAX_WALLS) {
             throw new Error("You've placed all your walls.");
