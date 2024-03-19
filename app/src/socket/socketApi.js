@@ -124,7 +124,7 @@ export function onSomeoneLeftLobby(f) {
  * @param {function(GameData): void} f - A function that is called when new game data is received.
  */
 export function onNewGameData(f) {
-    socket.on(newGameDataEvent, data);
+    socket.on(newGameDataEvent, f);
 }
 
 /**
