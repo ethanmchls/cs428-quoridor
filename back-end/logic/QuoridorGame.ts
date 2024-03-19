@@ -48,6 +48,64 @@ export class QuoridorGame {
         this.setNextTurn();
     }
 
+    // TODO: handle case of jumping over pawn:
+    // If adjacent to another pawn, the pawn may jump over that pawn. If that square is not accessible (e.g., off the edge of the board or blocked by a third pawn or a wall), the player may move to either space that is immediately adjacent (left or right) to the first pawn
+
+    // RULE: a wall may not be placed which cuts off the only remaining path of any pawn to the side of the board it must reach
+    // to check if the pawn is not trapped, visit every available move until we reach the goal.
+    // if every available space has been visited, it is trapped
+    isPawnNotTrapped(currentPlayer: QuoridorPlayer): boolean {
+        function checkTrappedPawnHelper(pawn: PawnLocation, moves: PawnLocation[], visited: PawnLocation[]): boolean {
+            if (pawn.r === currentPlayer.goal) {
+                return true;
+            }
+
+            for (let i = 0; i < moves.length; i++) {
+                const move = moves[i]!;
+                if (!visited.some((p) => p.r === move.r && p.c === move.c)) {
+                    const newMoves = this.getAvailablePawnMoves(move);
+                    // console.log("New moves: ", newMoves);
+                    const isNotTrapped = checkTrappedPawnHelper.bind(this)(move, newMoves, [...visited, move]);
+                    if (isNotTrapped) {
+                        return true;
+                    }
+                }
+            };
+
+            return false;
+        }
+
+        const moves = this.getAvailablePawnMoves(currentPlayer.pawn);
+
+        console.log("Available moves: ", moves);
+        console.log("Walls: ", this.currentBoard.walls);
+        return checkTrappedPawnHelper.bind(this)(currentPlayer.pawn, moves, []);
+    }
+
+    getAvailablePawnMoves(pawn: PawnLocation): PawnLocation[] {
+        const r = pawn.r;
+        const c = pawn.c;
+        const moves = [];
+        const isBlockedLeft = this.currentBoard.hasWall(r, c - 1);
+        const isBlockedRight = this.currentBoard.hasWall(r, c + 1);
+        const isBlockedUp = this.currentBoard.hasWall(r - 1, c);
+        const isBlockedDown = this.currentBoard.hasWall(r + 1, c);
+        if (r > 0 && !isBlockedUp) {
+            moves.push({r: r - 2, c: c});
+        }
+        if (r < 16 && !isBlockedDown) {
+            moves.push({r: r + 2, c: c});
+        }
+        if (c > 0 && !isBlockedLeft) {
+            moves.push({r: r, c: c - 2});
+        }
+        if (c < 16 && !isBlockedRight) {
+            moves.push({r: r, c: c + 2});
+        }
+
+        return moves;
+    }
+
     handlePawnMove(currentPlayer: QuoridorPlayer, move: PawnLocation) {
         const r = currentPlayer.pawn.r;
         const c = currentPlayer.pawn.c;
@@ -69,8 +127,6 @@ export class QuoridorGame {
         currentPlayer.pawn.c = move.c;
     }
 
-    // handle case of trapped pawn
-
     handleWallMove(currentPlayer: QuoridorPlayer, move: WallLocation) {
         if (currentPlayer.placedWalls.length >= MAX_WALLS) {
             throw new Error("You've placed all your walls.");
@@ -88,41 +144,61 @@ export class QuoridorGame {
         // Frontend logic to check if wall placement is valid. Does not check for player pawn blocking
         // If wall is a corner, place wall horizontally by default
         if (!isVerticalWall && !isHorizontalWall && !isBlockedLeft && !isBlockedRight && c > 0) {
-            this.currentBoard.walls.push({r: r, c: c + 1});
-            this.currentBoard.walls.push({r: r, c: c - 1});
+            this.currentBoard.walls.push({ r: r, c: c });
+            this.currentBoard.walls.push({ r: r, c: c + 1 });
+            this.currentBoard.walls.push({ r: r, c: c - 1 });
+            return;
         }
         // If the wall is a corner and is blocked on the left/right, place wall vertically
         else if (!isVerticalWall && !isHorizontalWall && ((isBlockedRight || isBlockedLeft) && (!isBlockedUp && !isBlockedDown))) {
-            this.currentBoard.walls.push({r: r - 1, c: c});
-            this.currentBoard.walls.push({r: r + 1, c: c});
+            this.currentBoard.walls.push({ r: r, c: c });
+            this.currentBoard.walls.push({ r: r - 1, c: c });
+            this.currentBoard.walls.push({ r: r + 1, c: c });
+            return;
         }
         // If the wall is a vertical edge and is not blocked down, place vertically down by default
         else if (isVerticalWall && !isHorizontalWall && r < 16 && !isBlockedDown) {
-            this.currentBoard.walls.push({r: r + 1, c: c});
-            this.currentBoard.walls.push({r: r + 2, c: c});
+            this.currentBoard.walls.push({ r: r, c: c });
+            this.currentBoard.walls.push({ r: r + 1, c: c });
+            this.currentBoard.walls.push({ r: r + 2, c: c });
+            return;
         }
         // If the wall is a vertical edge and is blocked down, place vertically up
         else if (
             (isVerticalWall && !isHorizontalWall && r === 16 && !isBlockedUp) ||
             (isVerticalWall && !isHorizontalWall && r < 16 && isBlockedDown && !isBlockedUp && r > 0)
         ) {
-            this.currentBoard.walls.push({r: r - 1, c: c});
-            this.currentBoard.walls.push({r: r - 2, c: c});
+            this.currentBoard.walls.push({ r: r, c: c });
+            this.currentBoard.walls.push({ r: r - 1, c: c });
+            this.currentBoard.walls.push({ r: r - 2, c: c });
+            return;
         }
         // If the wall is a horizontal edge and is not blocked right, place horizontally right by default
         else if (isHorizontalWall && !isVerticalWall && c < 16 && !isBlockedRight) {
-            this.currentBoard.walls.push({r: r, c: c + 1});
-            this.currentBoard.walls.push({r: r, c: c + 2});
+            this.currentBoard.walls.push({ r: r, c: c });
+            this.currentBoard.walls.push({ r: r, c: c + 1 });
+            this.currentBoard.walls.push({ r: r, c: c + 2 });
+            return;
         }
         // If the wall is a horizontal edge and is blocked right, place horizontally left
         else if (
             (isHorizontalWall && !isVerticalWall && c === 16 && !isBlockedLeft) ||
             (isHorizontalWall && !isVerticalWall && c < 16 && isBlockedRight && !isBlockedLeft && c > 0)
         ) {
-            this.currentBoard.walls.push({r: r, c: c - 1});
-            this.currentBoard.walls.push({r: r, c: c - 2});
+            this.currentBoard.walls.push({ r: r, c: c });
+            this.currentBoard.walls.push({ r: r, c: c - 1 });
+            this.currentBoard.walls.push({ r: r, c: c - 2 });
+            return;
         }
         // If the wall is blocked otherwise, do not place the wall
+        console.log("Invalid wall state: ", {
+            isVerticalWall,
+            isHorizontalWall,
+            isBlockedLeft,
+            isBlockedRight,
+            isBlockedUp,
+            isBlockedDown,
+        });
         throw new Error("Invalid wall location");
     }
 
