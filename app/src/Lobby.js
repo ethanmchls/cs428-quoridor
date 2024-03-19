@@ -52,6 +52,11 @@ const LobbyBox = memo(({gamesInProgress, playersWaiting}) => {
     };
   }, []); // Empty dependency array ensures the effect runs only once when the component mounts
 
+  const handleJoinLobbyClicked = () => {
+    joinLobby(); 
+    // TODO: Add loading screen or something
+  }
+
   return (
     <div className={'lobby'}>
       <h2>Lobby</h2>
@@ -63,7 +68,7 @@ const LobbyBox = memo(({gamesInProgress, playersWaiting}) => {
             <img key={index} src={quoridorPawn} alt="pawn" className={'pawn'}/>
             ))}
       </div>
-      <button className={'join-button'} onClick={() => joinLobby()}>Start Game</button>
+      <button className={'join-button'} onClick={handleJoinLobbyClicked}>Start Game</button>
     </div>
   );
 });
