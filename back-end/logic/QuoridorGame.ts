@@ -207,6 +207,7 @@ export class QuoridorGame {
             currentTurn: this.currentTurn,
             pawns: this.players.map((player) => player.pawn),
             walls: this.currentBoard.walls,
+            playerMoves: this.players.map((player) => this.getAvailablePawnMoves(player.pawn)),
         }
     }
 }

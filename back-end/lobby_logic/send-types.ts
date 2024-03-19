@@ -11,4 +11,5 @@ export type GameSendType = {
     currentTurn: number;
     pawns: PawnLocation[],
     walls: WallLocation[],
+    playerMoves: PawnLocation[][],
 }
