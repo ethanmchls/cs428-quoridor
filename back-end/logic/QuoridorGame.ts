@@ -128,9 +128,10 @@ export class QuoridorGame {
     }
 
     handleWallMove(currentPlayer: QuoridorPlayer, move: WallLocation) {
-        if (currentPlayer.placedWalls.length >= MAX_WALLS) {
+        if (currentPlayer.placedWalls >= MAX_WALLS) {
             throw new Error("You've placed all your walls.");
         }
+        console.log("Fot move: ", move);
 
         const r = move.r;
         const c = move.c;
@@ -192,6 +193,7 @@ export class QuoridorGame {
             if (!this.players.every((player) => this.isPawnNotTrapped(player))) {
                 throw new Error("Cannot place wall at that location, it would trap a player.");
             }
+            currentPlayer.placedWalls++;
             return;
         }
 
@@ -213,6 +215,7 @@ export class QuoridorGame {
             pawns: this.players.map((player) => player.pawn),
             walls: this.currentBoard.walls,
             playerMoves: this.players.map((player) => this.getAvailablePawnMoves(player.pawn)),
+            numWalls: this.players.map((player) => MAX_WALLS - player.placedWalls),
         }
     }
 }

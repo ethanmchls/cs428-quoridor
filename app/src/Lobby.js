@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { onConnectedPlayersChanged, offConnectedPlayersChanged } from './socket/socketApi'; // replace with the correct path
+import { onConnectedPlayersChanged, offConnectedPlayersChanged, joinLobby, onGameStarted, offGameStarted } from './socket/socketApi'; // replace with the correct path
 import quoridorPawn from './chess-piece.svg';
 import { memo } from 'react';
 import './Lobby.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './App.css';
 import { Footer } from './footer.js';
 
@@ -28,6 +28,7 @@ export const Lobby = memo(() => {
 
 const LobbyBox = memo(({gamesInProgress, playersWaiting}) => {
   const [connectedPlayers, setConnectedPlayers] = useState(playersWaiting);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Define the callback function to update the state when the number of connected players changes
@@ -35,12 +36,19 @@ const LobbyBox = memo(({gamesInProgress, playersWaiting}) => {
       setConnectedPlayers(numberOfPlayers);
     };
 
+    const handleReadyForGame = () => {
+      navigate("/game");
+    }
+
     // Set up the listener when the component mounts
     onConnectedPlayersChanged(handleConnectedPlayersChange);
+
+    onGameStarted(handleReadyForGame);
 
     // Clean up the listener when the component unmounts
     return () => {
       offConnectedPlayersChanged(handleConnectedPlayersChange);
+      offGameStarted(handleReadyForGame);
     };
   }, []); // Empty dependency array ensures the effect runs only once when the component mounts
 
@@ -55,7 +63,7 @@ const LobbyBox = memo(({gamesInProgress, playersWaiting}) => {
             <img key={index} src={quoridorPawn} alt="pawn" className={'pawn'}/>
             ))}
       </div>
-      <Link to="/game"><button className={'join-button'}>Start Game</button></Link>
+      <button className={'join-button'} onClick={() => joinLobby()}>Start Game</button>
     </div>
   );
 });
