@@ -21,11 +21,12 @@ const newGameDataEvent = "newGameData";
  */
 
 /**
- * Interface for a Quoridor move, which can be either a pawn move or a wall move.
+ * Interface for Game data.
  * @typedef {Object} GameData
  * @property {number} currentTurn
  * @property {Array<PawnLocation>} pawns - The location of the pawn move.
  * @property {Array<WallLocation>} walls - The location of the wall move.
+ * @property {Array<Array<PawnLocation>>} playerMoves - Each players' available moves.
  */
 
 /**
@@ -123,7 +124,7 @@ export function onSomeoneLeftLobby(f) {
  * @param {function(GameData): void} f - A function that is called when new game data is received.
  */
 export function onNewGameData(f) {
-    socket.on(newGameDataEvent, data);
+    socket.on(newGameDataEvent, f);
 }
 
 /**

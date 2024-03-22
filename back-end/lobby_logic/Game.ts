@@ -1,8 +1,8 @@
-import { QuoridorGame } from "logic/QuoridorGame";
+import { QuoridorGame } from "../logic/QuoridorGame";
 import { generateUuid } from "../util/uuid";
 import { Player } from "./Player";
-import { QuoridorPlayer } from "logic/QuoridorPlayer";
-import { QuoridorMove } from "logic/QuoridorMove";
+import { QuoridorPlayer } from "../logic/QuoridorPlayer";
+import { QuoridorMove } from "../logic/QuoridorMove";
 
 export type GameId = string;
 

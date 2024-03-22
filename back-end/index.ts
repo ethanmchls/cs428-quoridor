@@ -5,9 +5,9 @@ import path from "path";
 import cors from "cors";
 import { Player } from "./lobby_logic/Player";
 import { LobbyService, LobbyTypes } from "./lobby_logic/LobbyService";
-import { QuoridorMove } from "logic/QuoridorMove";
-import { Games } from "lobby_logic/Games";
-import { Game } from "lobby_logic/Game";
+import { QuoridorMove } from "./logic/QuoridorMove";
+import { Games } from "./lobby_logic/Games";
+import { Game } from "./lobby_logic/Game";
 
 const app = express();
 
