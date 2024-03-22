@@ -85,19 +85,21 @@ export const GameScreen = () => {
   }
 
   return (
-    <div className='App bg-[#7d543c] min-w-max'>
-    <Header currentPath={PATH.GAME} />
-      <GameGrid
-        player1={player1}
-        updatePlayer1={updatePlayer1}
-        player2={player2}
-        updatePlayer2={updatePlayer2}
-        walls={walls}
-        updateWalls={updateWalls}
-        placeableWalls={placeableWalls}
-        updatePlaceableWalls={updatePlaceableWalls}/>
-      <Footer />
-    </div>
+    <html data-theme="quoridor">
+      <div className='App bg-base-100 min-w-max'>
+      <Header currentPath={PATH.GAME} />
+        <GameGrid
+          player1={player1}
+          updatePlayer1={updatePlayer1}
+          player2={player2}
+          updatePlayer2={updatePlayer2}
+          walls={walls}
+          updateWalls={updateWalls}
+          placeableWalls={placeableWalls}
+          updatePlaceableWalls={updatePlaceableWalls}/>
+        <Footer />
+      </div>
+    </html>
   );
 };
 
@@ -622,7 +624,7 @@ export const GameGrid = ({ player1, updatePlayer1, player2, updatePlayer2, walls
   return (
     <div className="flex justify-center items-center h-full mx-auto my-auto">
       <div className={`flex flex-col mx-auto rounded-md ${borderColor} ${borderWidth}`}>
-        <div className={`flex justify-center text-amber-600 font-bold text-lg w-full ${cellColor}`}>Player 1</div>
+        <div className={`flex justify-center text-primary font-bold text-lg w-full ${cellColor}`}>Player 1</div>
         <div className={`w-auto flex flex-row my-auto`}>
           {p1WallStack}
           <div className={`${borderWidth} border-l-black border-r-black border-t-amber-900 border-b-amber-900`}>
@@ -630,7 +632,7 @@ export const GameGrid = ({ player1, updatePlayer1, player2, updatePlayer2, walls
           </div>
           {p2WallStack}
         </div>
-        <div className={`flex justify-center text-amber-600 font-bold text-lg w-full ${cellColor}`}>Player 2</div>
+        <div className={`flex justify-center text-primary font-bold text-lg w-full ${cellColor}`}>Player 2</div>
       </div>
     </div>
   );
