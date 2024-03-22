@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Pawn from './Pawn';
 import WallStack from './WallStack';
 import { Footer } from './footer';
+import { Header, PATH } from './header.js';
 import './App.css';
 
 // Player object used to store player information
@@ -84,6 +85,7 @@ export const GameScreen = () => {
   return (
     <>
     <div className='App bg-[#7d543c] min-w-max'>
+    <Header currentPath={PATH.GAME} />
       <GameGrid
         player1={player1}
         updatePlayer1={updatePlayer1}

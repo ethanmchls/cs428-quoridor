@@ -6,10 +6,12 @@ import './Lobby.css';
 import { Link } from 'react-router-dom';
 import './App.css';
 import { Footer } from './footer.js';
+import { Header, PATH } from './header.js';
 
 export const Lobby = memo(() => {
   return (
     <div className={"App"}>
+      <Header currentPath={PATH.HOME} />
         <div className={'App-content'}>
           <div className={'game-description'}>
             <h1>Quoridor</h1>

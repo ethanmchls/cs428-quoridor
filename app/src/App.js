@@ -4,7 +4,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Lobby } from './Lobby';
 import { GameScreen } from './GameView';
-import { About } from './About';
+import { About } from './about';
 
 function App() {
   return (
