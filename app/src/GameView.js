@@ -85,21 +85,19 @@ export const GameScreen = () => {
   }
 
   return (
-    <html data-theme="quoridor">
-      <div className='App bg-base-100 min-w-max'>
-      <Header currentPath={PATH.GAME} />
-        <GameGrid
-          player1={player1}
-          updatePlayer1={updatePlayer1}
-          player2={player2}
-          updatePlayer2={updatePlayer2}
-          walls={walls}
-          updateWalls={updateWalls}
-          placeableWalls={placeableWalls}
-          updatePlaceableWalls={updatePlaceableWalls}/>
-        <Footer />
-      </div>
-    </html>
+    <div className='App bg-base-100 min-w-max'>
+    <Header currentPath={PATH.GAME} />
+      <GameGrid
+        player1={player1}
+        updatePlayer1={updatePlayer1}
+        player2={player2}
+        updatePlayer2={updatePlayer2}
+        walls={walls}
+        updateWalls={updateWalls}
+        placeableWalls={placeableWalls}
+        updatePlaceableWalls={updatePlaceableWalls}/>
+      <Footer />
+    </div>
   );
 };
 
