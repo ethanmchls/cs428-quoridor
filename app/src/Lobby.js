@@ -10,10 +10,11 @@ import { Header, PATH } from './header.js';
 
 export const Lobby = memo(() => {
   return (
-    <div className={"App bg-base-100"}>
+    <div className="flex flex-col h-screen">
       <Header currentPath={PATH.HOME} />
-        <div className={'App-content'}>
-          <div className={'game-description'}>
+      <div className="flex-grow">
+        <div className="flex flex-row w-3/4 mx-auto my-8 h-full">
+          <div className="flex-col w-2/3 mr-4">
             <h1>Quoridor</h1>
             <p>Quoridor is a strategy game that is easy to learn and fun to play. The goal of the game is to move your pawn to the other side of the board. You can also place walls to block your opponent's path. The first player to reach the other side wins!</p>
             <h2>How to Play</h2>
@@ -23,7 +24,8 @@ export const Lobby = memo(() => {
           </div>
           <LobbyBox gamesInProgress={3} playersWaiting={3}/>
         </div>
-        <Footer />
+      </div>
+      <Footer />
     </div>
   );
 });
@@ -47,17 +49,16 @@ const LobbyBox = memo(({gamesInProgress, playersWaiting}) => {
   }, []); // Empty dependency array ensures the effect runs only once when the component mounts
 
   return (
-    <div className={'lobby'}>
+    <div className="h-fit p-8 flex flex-col border-2 border-primary mt-2 rounded-box bg-base-200">
       <h2>Lobby</h2>
       <p>{gamesInProgress} games in progress</p>
-
-      <div className={'lobby-line'}>
+      <div className="flex flex-row mb-4">
         <p>{connectedPlayers} players waiting for a game</p>
         {Array.from({ length: connectedPlayers }, (_, index) => (
-            <img key={index} src={quoridorPawn} alt="pawn" className={'pawn'}/>
-            ))}
+          <img key={index} src={quoridorPawn} alt="pawn" className="h-6"/>
+          ))}
       </div>
-      <Link to="/game"><button className={'join-button'}>Start Game</button></Link>
+      <Link to="/game"><button className="btn btn-secondary">Start Game</button></Link>
     </div>
   );
 });

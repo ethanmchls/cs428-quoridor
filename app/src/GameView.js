@@ -85,8 +85,8 @@ export const GameScreen = () => {
   }
 
   return (
-    <div className='App bg-base-100 min-w-max'>
-    <Header currentPath={PATH.GAME} />
+    <div className='bg-base-100 h-screen flex flex-col'>
+      <Header currentPath={PATH.GAME} /> 
       <GameGrid
         player1={player1}
         updatePlayer1={updatePlayer1}
@@ -160,8 +160,8 @@ export const GameGrid = ({ player1, updatePlayer1, player2, updatePlayer2, walls
 
   const gridSize = 17;  // 9 cells + 8 walls = 17 x 17 grid
   // Constants used to adjust the grid cell attributes
-  const cellHeight = "xl:h-[70px] lg:h-[50px] h-[30px]";
-  const cellWidth = "xl:w-[70px] lg:w-[50px] w-[30px]";
+  const cellHeight = "xl:h-[65px] lg:h-[50px] h-[30px]";
+  const cellWidth = "xl:w-[65px] lg:w-[50px] w-[30px]";
   const wallWidth = "xl:w-[15px] lg:w-[10px] w-[8px]";
   const wallHeight = "xl:h-[15px] lg:h-[10px] h-[8px]";
   const wallStackWidth = "xl:w-[155px] lg:w-[100px] w-[80px]"
@@ -620,17 +620,19 @@ export const GameGrid = ({ player1, updatePlayer1, player2, updatePlayer2, walls
   }
 
   return (
-    <div className="flex justify-center items-center h-full mx-auto my-auto">
-      <div className={`flex flex-col mx-auto rounded-md ${borderColor} ${borderWidth}`}>
-        <div className={`flex justify-center text-primary font-bold text-lg w-full ${cellColor}`}>Player 1</div>
-        <div className={`w-auto flex flex-row my-auto`}>
-          {p1WallStack}
-          <div className={`${borderWidth} border-l-black border-r-black border-t-amber-900 border-b-amber-900`}>
-            <div className={`grid grid-cols-17 grow`}>{grid}</div>
+    <div className="flex-grow">
+      <div className="flex justify-center items-center mx-auto h-full">
+        <div className={`flex flex-col mx-auto rounded-md ${borderColor} ${borderWidth}`}>
+          <div className={`flex justify-center text-primary font-bold text-lg w-full ${cellColor}`}>Player 1</div>
+          <div className={`w-auto flex flex-row my-auto`}>
+            {p1WallStack}
+            <div className={`${borderWidth} border-l-black border-r-black border-t-amber-900 border-b-amber-900`}>
+              <div className={`grid grid-cols-17 grow`}>{grid}</div>
+            </div>
+            {p2WallStack}
           </div>
-          {p2WallStack}
+          <div className={`flex justify-center text-primary font-bold text-lg w-full ${cellColor}`}>Player 2</div>
         </div>
-        <div className={`flex justify-center text-primary font-bold text-lg w-full ${cellColor}`}>Player 2</div>
       </div>
     </div>
   );
