@@ -86,11 +86,13 @@ export const GameScreen = () => {
 
       setPlayer1((prevPlayer) => {
         prevPlayer.nWalls = data.numWalls[0];
+        prevPlayer.pawnPos = [data.pawns[0].r, data.pawns[0].c];
         return prevPlayer;
       });
 
       setPlayer2((prevPlayer) => {
         prevPlayer.nWalls = data.numWalls[1];
+        prevPlayer.pawnPos = [data.pawns[1].r, data.pawns[1].c];
         return prevPlayer;
       });
     }
@@ -219,10 +221,16 @@ export const GameGrid = ({ player1, updatePlayer1, player2, updatePlayer2, walls
   const handleCells1Click = (pos) => {
     const r = parseInt(pos.split('-')[0]);
     const c = parseInt(pos.split('-')[1]);
-    let player = player1;
-    player.pawnPos = [r, c];
-    player.getAdjacentCells(walls);
-    updatePlayer1(player);
+    // let player = player1;
+    // player.pawnPos = [r, c];
+    // player.getAdjacentCells(walls);
+    // updatePlayer1(player);
+    makeMove({
+      pawnMove: {
+        r: r,
+        c: c,
+      }
+    });
     setPawn1Clicked(false);
     setCells1Clicked(true);
   }
@@ -230,10 +238,16 @@ export const GameGrid = ({ player1, updatePlayer1, player2, updatePlayer2, walls
   const handleCells2Click = (pos) => {
     const r = parseInt(pos.split('-')[0]);
     const c = parseInt(pos.split('-')[1]);
-    let player = player2;
-    player.pawnPos = [r, c];
-    player.getAdjacentCells(walls);
-    updatePlayer2(player);
+    // let player = player2;
+    // player.pawnPos = [r, c];
+    // player.getAdjacentCells(walls);
+    // updatePlayer2(player);
+    makeMove({
+      pawnMove: {
+        r: r,
+        c: c,
+      }
+    });
     setPawn2Clicked(false);
     setCells2Clicked(true);
   }
