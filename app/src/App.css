@@ -24,10 +24,12 @@
 
 .App-content {
   display: flex;
+  flex: 1;
   max-width: 1280px;
   margin-right: 40px;
   margin-left: 40px;
   margin-top: 20px;
+  align-items: left;
 }
 
 @media only screen and (min-width: 768px) {
@@ -39,12 +41,6 @@
   .App-content {
     flex-direction: column;
   }
-}
-
-.game-description {
-  /* font-size: 1.5em; */
-  flex: 2.5;
-  padding: 20px;
 }
 
 h1 {

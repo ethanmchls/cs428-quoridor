@@ -1,0 +1,30 @@
+/* Header class */
+.header {
+    width: 100%;
+    padding: 20px;
+    flex: 0;
+}
+
+/* Header content class */
+.header-content {
+    display: flex;
+    justify-content: left;
+    gap: .3em;
+    font-weight: 300;
+}
+
+.logo {
+    height: 40px;
+    padding: 5px;
+}
+
+/* Header link class */
+.header-link {
+    display: flex;
+    align-items: center;
+
+}
+.header-link:hover {
+    color: tan;
+    text-decoration: underline; /* Add underline */
+}
