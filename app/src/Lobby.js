@@ -30,6 +30,7 @@ export const Lobby = memo(() => {
 
 const LobbyBox = memo(({gamesInProgress, playersWaiting}) => {
   const [connectedPlayers, setConnectedPlayers] = useState(playersWaiting);
+  const [buttonText, setButtonText] = useState("Start Game");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -56,6 +57,7 @@ const LobbyBox = memo(({gamesInProgress, playersWaiting}) => {
 
   const handleJoinLobbyClicked = () => {
     joinLobby(); 
+    setButtonText("Waiting on another player");
     // TODO: Add loading screen or something
   }
 
@@ -70,7 +72,7 @@ const LobbyBox = memo(({gamesInProgress, playersWaiting}) => {
             <img key={index} src={quoridorPawn} alt="pawn" className={'pawn'}/>
             ))}
       </div>
-      <button className={'join-button'} onClick={handleJoinLobbyClicked}>Start Game</button>
+      <button className={'join-button'} onClick={handleJoinLobbyClicked}>{buttonText}</button>
     </div>
   );
 });
