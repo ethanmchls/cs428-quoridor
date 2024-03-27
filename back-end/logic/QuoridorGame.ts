@@ -114,12 +114,21 @@ export class QuoridorGame {
         const isBlockedRight = this.currentBoard.hasWall(r, c + 1);
         const isBlockedUp = this.currentBoard.hasWall(r - 1, c);
         const isBlockedDown = this.currentBoard.hasWall(r + 1, c);
-        if (
+
+        console.log("new move: ", move);
+        console.log("Current pos: ", currentPlayer.pawn);
+        console.log("Blocked: ", {
+            isBlockedLeft,
+            isBlockedRight,
+            isBlockedUp,
+            isBlockedDown,
+        })
+        if (!(
             (r > 0 && !isBlockedUp && r - 2 != move.r && c != move.c) ||
             (r < 16 && !isBlockedDown && r + 2 != move.r && c != move.c) ||
             (c > 0 && !isBlockedLeft && r != move.r && c - 2 != move.c) ||
             (c < 16 && !isBlockedRight && r != move.r && c + 2 != move.c)
-        ) {
+        )) {
             throw new Error("Invalid pawn move.");
         }
 
@@ -128,9 +137,10 @@ export class QuoridorGame {
     }
 
     handleWallMove(currentPlayer: QuoridorPlayer, move: WallLocation) {
-        if (currentPlayer.placedWalls.length >= MAX_WALLS) {
+        if (currentPlayer.placedWalls >= MAX_WALLS) {
             throw new Error("You've placed all your walls.");
         }
+        console.log("Fot move: ", move);
 
         const r = move.r;
         const c = move.c;
@@ -192,6 +202,7 @@ export class QuoridorGame {
             if (!this.players.every((player) => this.isPawnNotTrapped(player))) {
                 throw new Error("Cannot place wall at that location, it would trap a player.");
             }
+            currentPlayer.placedWalls++;
             return;
         }
 
@@ -213,6 +224,7 @@ export class QuoridorGame {
             pawns: this.players.map((player) => player.pawn),
             walls: this.currentBoard.walls,
             playerMoves: this.players.map((player) => this.getAvailablePawnMoves(player.pawn)),
+            numWalls: this.players.map((player) => MAX_WALLS - player.placedWalls),
         }
     }
 }

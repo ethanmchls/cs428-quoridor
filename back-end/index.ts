@@ -21,9 +21,14 @@ const io = new Server(httpserver, {
     },
 }); 
 
-const gamedirectory = path.join(__dirname, "public");
+const publicDirectory = process.env.PUBLIC_DIR || path.join(__dirname, "public");
+console.log("Got directory: ", publicDirectory);
 
-app.use(express.static(gamedirectory));
+app.use(express.static(publicDirectory));
+
+app.get("/", (_req, res) => {
+    res.sendFile(path.join(publicDirectory, "index.html"));
+});
 
 httpserver.listen(3001, function() {
     console.log("Listening on port 3001");
@@ -50,8 +55,15 @@ io.on('connection', (socket) => {
 	});
 
 	socket.on('makeMove', (move: QuoridorMove) => {
-		const game = getCurrentGame(player);
-		game.takeTurn(player, move);
+		try {
+			console.log("Got move: ", move);
+			const game = getCurrentGame(player);
+			game.takeTurn(player, move);
+			game.sendCurrentGameData();
+		}
+		catch (err) {
+			handleError(err, socket);
+		}
 	});
 
 	socket.on('joinLobby', (type: LobbyTypes) => {
@@ -83,7 +95,7 @@ function getCurrentGame(player: Player): Game {
 function handleError(err: any, socket: Socket) {
 	console.error("Handling error: ", err);
 	try {
-		io.to(socket.id).emit("player error", err.message ?? "An unknown server error occurred.");
+		io.to(socket.id).emit("playerError", err.message ?? "An unknown server error occurred.");
 	}
 	catch (err2) {
 		console.error("Couldn't send error message: ", err2);

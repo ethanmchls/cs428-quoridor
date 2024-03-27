@@ -1,13 +1,13 @@
 import { Player } from "lobby_logic/Player";
-import { PawnLocation, WallLocation } from "./QuoridorMove";
+import { PawnLocation } from "./QuoridorMove";
 
 export class QuoridorPlayer {
     player: Player;
-    placedWalls: WallLocation[];
+    placedWalls: number;
     pawn: PawnLocation;
     goal: number;
 
-    constructor (player: Player, placedWalls: WallLocation[], pawn: PawnLocation) {
+    constructor (player: Player, placedWalls: number, pawn: PawnLocation) {
         this.player = player;
         this.placedWalls = placedWalls;
         this.pawn = pawn;

@@ -10,6 +10,7 @@ const gameEndedEvent = "gameEnded";
 const gameStartedEvent = "gameStarted";
 const leftLobbyEvent = "leftLobby";
 const newGameDataEvent = "newGameData";
+const playerErrorEvent = "playerError";
 
 /**
  * Represents the structure of a lobby.
@@ -26,6 +27,7 @@ const newGameDataEvent = "newGameData";
  * @property {number} currentTurn
  * @property {Array<PawnLocation>} pawns - The location of the pawn move.
  * @property {Array<WallLocation>} walls - The location of the wall move.
+ * @property {Array<number>} numWalls - The number of walls each player has.
  * @property {Array<Array<PawnLocation>>} playerMoves - Each players' available moves.
  */
 
@@ -68,7 +70,7 @@ export function joinLobby(twoPlayer = true) {
 
 /**
  * Makes a move for the current player.
- * @param {QuoridorMove} - Move the player wants to make.
+ * @param {QuoridorMove} move - Move the player wants to make.
  */
 export function makeMove(move) {
     socket.emit(makeMoveName, move);
@@ -125,6 +127,23 @@ export function onSomeoneLeftLobby(f) {
  */
 export function onNewGameData(f) {
     socket.on(newGameDataEvent, f);
+}
+
+/**
+ *
+ * @param {function(string): void} f - A function that is called when an error is received.
+ */
+export function onPlayerError(f) {
+    socket.on(playerErrorEvent, f);
+}
+
+/**
+ * Removes the listener for the "playerError" event.
+ *
+ * @param {function(string): void} f - The function to be removed from the listeners.
+ */
+export function offPlayerError(f) {
+    socket.off(playerErrorEvent, f);
 }
 
 /**

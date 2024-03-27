@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
-import { Header, PATH } from './header.js';
+import React, { useEffect, useState } from 'react';
+import Pawn from './Pawn';
+import WallStack from './WallStack';
 import { Footer } from './footer';
-import { Player } from './player';
-import { GameGrid } from './GameGrid';
+import { Header, PATH } from './header.js';
+import { makeMove, offNewGameData, offPlayerError, onNewGameData, onPlayerError } from './socket/socketApi';
 import './App.css';
 
 export const GameScreen = () => {
@@ -32,17 +33,12 @@ export const GameScreen = () => {
   const [player2, setPlayer2] = useState(new Player(2, [16, 8], 10));
   const [walls, setWalls] = useState([]);
   const [placeableWalls, setPlaceableWalls] = useState(allWalls);
+  const [errorText, setErrorText] = useState("");
   const updatePlayer1 = (player) => {
     setPlayer1(player);
   }
   const updatePlayer2 = (player) => {
     setPlayer2(player);
-  }
-  const updateWalls = (wall) => {
-    // var tmp = walls;
-    // tmp.push(wall);
-    // setWalls(tmp);
-    setWalls((prevWalls) => [...prevWalls, wall]);
   }
   const updatePlaceableWalls = (wall) => {
     // var tmp = placeableWalls;
@@ -50,6 +46,37 @@ export const GameScreen = () => {
     // setPlaceableWalls(tmp);
     setPlaceableWalls((prevPlaceableWalls) => prevPlaceableWalls.filter((_, i) => i !== wall));
   }
+
+  useEffect(() => {
+    const handleNewGameData = (data) => {
+      console.log("Got new data: ", data);
+      setWalls(data.walls.map((wall) => `${wall.r}-${wall.c}`));
+
+      setPlayer1((prevPlayer) => {
+        prevPlayer.nWalls = data.numWalls[0];
+        prevPlayer.pawnPos = [data.pawns[0].r, data.pawns[0].c];
+        return prevPlayer;
+      });
+
+      setPlayer2((prevPlayer) => {
+        prevPlayer.nWalls = data.numWalls[1];
+        prevPlayer.pawnPos = [data.pawns[1].r, data.pawns[1].c];
+        return prevPlayer;
+      });
+    }
+
+    const handlePlayerError = (error) => {
+      setErrorText(error);
+    }
+
+    onNewGameData(handleNewGameData);
+    onPlayerError(handlePlayerError);
+
+    return () => {
+      offNewGameData(handleNewGameData);
+      offPlayerError(handlePlayerError);
+    }
+  }, []);
 
   return (
     <div className='bg-base-100 h-screen flex flex-col'>
@@ -60,9 +87,11 @@ export const GameScreen = () => {
         player2={player2}
         updatePlayer2={updatePlayer2}
         walls={walls}
-        updateWalls={updateWalls}
         placeableWalls={placeableWalls}
-        updatePlaceableWalls={updatePlaceableWalls}/>
+        updatePlaceableWalls={updatePlaceableWalls}
+      />
+      {/* TODO: make look nice */}
+      <div className='error-text'>{errorText}</div>
       <Footer />
     </div>
   );

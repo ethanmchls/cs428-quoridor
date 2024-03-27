@@ -14,7 +14,7 @@ export class Game {
     constructor(players: Player[]) {
         this.id = generateUuid();
         this.players = players;
-        this.game = new QuoridorGame(players.map((player, i) => new QuoridorPlayer(player, [], {r: i===0 ? 0 : 16, c: 8})));
+        this.game = new QuoridorGame(players.map((player, i) => new QuoridorPlayer(player, 0, {r: i===0 ? 0 : 16, c: 8})));
         this.sendStartGame();
     }
 
