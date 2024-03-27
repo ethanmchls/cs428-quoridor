@@ -21,9 +21,14 @@ const io = new Server(httpserver, {
     },
 }); 
 
-const gamedirectory = path.join(__dirname, "public");
+const publicDirectory = process.env.PUBLIC_DIR || path.join(__dirname, "public");
+console.log("Got directory: ", publicDirectory);
 
-app.use(express.static(gamedirectory));
+app.use(express.static(publicDirectory));
+
+app.get("/", (_req, res) => {
+    res.sendFile(path.join(publicDirectory, "index.html"));
+});
 
 httpserver.listen(3001, function() {
     console.log("Listening on port 3001");
