@@ -1,5 +1,4 @@
 import React, { memo } from 'react';
-import './header.css';
 // import pawnLogo from './pawn.png';
 
 export const PATH = {

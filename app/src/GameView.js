@@ -4,7 +4,6 @@ import { GameGrid } from './GameGrid.js';
 import { Footer } from './footer';
 import { Header, PATH } from './header.js';
 import { offNewGameData, offPlayerError, onNewGameData, onPlayerError } from './socket/socketApi';
-import './App.css';
 
 export const GameScreen = () => {
 
