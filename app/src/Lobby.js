@@ -71,7 +71,7 @@ const LobbyBox = memo(({gamesInProgress, playersWaiting}) => {
           <img key={index} src={quoridorPawn} alt="pawn" className="h-6"/>
           ))}
       </div>
-      <Link to="/game"><button className="btn btn-secondary" onClick={handleJoinLobbyClicked}>Start Game</button></Link>
+      <Link to="/game"><button className="btn btn-secondary" onClick={handleJoinLobbyClicked}>{buttonText}</button></Link>
     </div>
   );
 });

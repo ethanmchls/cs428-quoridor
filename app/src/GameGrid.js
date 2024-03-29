@@ -37,16 +37,16 @@ const PlacedWall = ({ classes }) => {
 
 export const GameGrid = ({ player1, updatePlayer1, player2, updatePlayer2, walls, updateWalls, placeableWalls, updatePlaceableWalls }) => {
 
-  const subtractWall = (player) => {
-    const tmp = player;
-    tmp.nWalls -= 1;
-    if (player.playerNum === 1) {
-      updatePlayer1(tmp);
-    }
-    else {
-      updatePlayer2(tmp);
-    }
-  }
+  // const subtractWall = (player) => {
+  //   const tmp = player;
+  //   tmp.nWalls -= 1;
+  //   if (player.playerNum === 1) {
+  //     updatePlayer1(tmp);
+  //   }
+  //   else {
+  //     updatePlayer2(tmp);
+  //   }
+  // }
 
   const updateBlockedMoves = (player) => {
     const tmp = player;
@@ -385,6 +385,9 @@ export const GameGrid = ({ player1, updatePlayer1, player2, updatePlayer2, walls
         c: c,
       }
     });
+
+    setP1SelectedWall(10);
+    setP2SelectedWall(10);
 
     setP1WallClicked(false);
     setP2WallClicked(false);

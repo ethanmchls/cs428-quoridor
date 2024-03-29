@@ -15,7 +15,7 @@ export const GameScreen = () => {
     "7-0", "7-1", "7-2", "7-3", "7-4", "7-5", "7-6", "7-7", "7-8", "7-9", "7-10", "7-11", "7-12", "7-13", "7-14", "7-15", "7-16",
     "9-0", "9-1", "9-2", "9-3", "9-4", "9-5", "9-6", "9-7", "9-8", "9-9", "9-10", "9-11", "9-12", "9-13", "9-14", "9-15", "9-16",
     "11-0", "11-1", "11-2", "11-3", "11-4", "11-5", "11-6", "11-7", "11-8", "11-9", "11-10", "11-11", "11-12", "11-13", "11-14", "11-15", "11-16",
-    "13-0", "13-1", "13-2", "13-3", "13-4", "13-5", "13-6", "13-7", "13-8", "13-9", "13-10", "13-11", "13-12", "13-13", "13-14", "13-15", "13-16",
+    "13-0", "13-1", "13-2", "13-3", "13-4", "13-5", "13-6", "13-7", "13-8", "13-9", "13-1f0", "13-11", "13-12", "13-13", "13-14", "13-15", "13-16",
     "15-0", "15-1", "15-2", "15-3", "15-4", "15-5", "15-6", "15-7", "15-8", "15-9", "15-10", "15-11", "15-12", "15-13", "15-14", "15-15", "15-16",
     "0-1", "1-2", "0-3", "1-3", "3-3", "0-5", "1-5", "3-5", "0-7", "1-7", "3-7", "0-9", "1-9", "3-9", "0-11", "1-11", "3-11", "0-13", "1-13", "3-13", "0-15", "1-15", "3-15",
     "2-1", "3-2", "2-3", "3-3", "3-4", "2-5", "3-5", "3-6", "2-7", "3-7", "3-8", "2-9", "3-9", "3-10", "2-11", "3-11", "3-12", "2-13", "3-13", "3-14", "2-15", "3-15", "3-16",
@@ -33,6 +33,7 @@ export const GameScreen = () => {
   const [walls, setWalls] = useState([]);
   const [placeableWalls, setPlaceableWalls] = useState(allWalls);
   const [errorText, setErrorText] = useState("");
+  const [showToast, setShowToast] = useState(false);
   const updatePlayer1 = (player) => {
     setPlayer1(player);
   }
@@ -45,6 +46,20 @@ export const GameScreen = () => {
     // setPlaceableWalls(tmp);
     setPlaceableWalls((prevPlaceableWalls) => prevPlaceableWalls.filter((_, i) => i !== wall));
   }
+
+  useEffect(() => {
+    if (errorText) {
+      setShowToast(true);
+      // Hide the toast after 5 seconds
+      const timeout = setTimeout(() => {
+        setShowToast(false);
+        setErrorText(""); // Clear the error text
+      }, 5000);
+
+      // Cleanup function to clear the timeout if component unmounts or error changes
+      return () => clearTimeout(timeout);
+    }
+  }, [errorText]);
 
   useEffect(() => {
     const handleNewGameData = (data) => {
@@ -89,8 +104,14 @@ export const GameScreen = () => {
         placeableWalls={placeableWalls}
         updatePlaceableWalls={updatePlaceableWalls}
       />
-      {/* TODO: make look nice */}
-      <div className='error-text'>{errorText}</div>
+      {/* <div className='error-text'>{errorText}</div> */}
+      {showToast && (
+        <div className="toast toast-start mb-12">
+          <div className="alert alert-error">
+            <span>{errorText}</span>
+          </div>
+        </div>
+      )}
       <Footer />
     </div>
   );
