@@ -40,6 +40,12 @@ export class Game {
         });
     }
 
+    sendPlayerDisconnected() {
+        this.players.forEach((player) => {
+            player.otherDisconnected();
+        });
+    }
+
     sendEndGame() {
         this.players.forEach((player) => {
             player.gameEnded();

@@ -43,6 +43,10 @@ export class Player {
         this.socket?.emit("gameChat", text);
     }
 
+    otherDisconnected() {
+        this.socket?.emit("playerDisconnected");
+    }
+
     gameEnded() {
         this.socket?.emit("gameEnded");
     }

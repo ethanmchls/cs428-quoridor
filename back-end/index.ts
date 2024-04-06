@@ -68,6 +68,7 @@ io.on('connection', (socket) => {
 
 	socket.on('joinLobby', (type: LobbyTypes) => {
 		try {
+			console.log("Joining lobby");
 			lobbyService.joinLobby(player, type);
 		}
 		catch (err) {
@@ -78,6 +79,14 @@ io.on('connection', (socket) => {
 	socket.on('disconnect', () => {
 		console.log("Player disconnected: ", player.id);
 		lobbyService.incrementConnectedPlayers(-1);
+		try {
+			const game = getCurrentGame(player);
+			game.sendPlayerDisconnected();
+			console.log("Notifying players about disconnect.");
+		}
+		catch (err) {
+			console.log("No need to notify people, not in a game.");
+		}
 	});
 });
 

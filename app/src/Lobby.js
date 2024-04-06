@@ -40,6 +40,7 @@ const LobbyBox = memo(({gamesInProgress, playersWaiting}) => {
     };
 
     const handleReadyForGame = () => {
+      console.log("Got ready for game");
       navigate("/game");
     }
 
@@ -71,7 +72,7 @@ const LobbyBox = memo(({gamesInProgress, playersWaiting}) => {
           <img key={index} src={quoridorPawn} alt="pawn" className="h-6"/>
           ))}
       </div>
-      <Link to="/game"><button className="btn btn-secondary" onClick={handleJoinLobbyClicked}>{buttonText}</button></Link>
+      <button className="btn btn-secondary" onClick={handleJoinLobbyClicked}>{buttonText}</button>
     </div>
   );
 });

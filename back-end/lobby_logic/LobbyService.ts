@@ -26,6 +26,7 @@ export class LobbyService {
         lobby.joinLobby(player);
         player.joinLobby(lobby);
         if (lobby.isFull()) {
+            console.log("Creating game");
             lobby.createGame();
         }
     }

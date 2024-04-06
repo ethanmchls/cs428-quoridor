@@ -3,7 +3,7 @@ import { Player } from './player';
 import { GameGrid } from './GameGrid.js';
 import { Footer } from './footer';
 import { Header, PATH } from './header.js';
-import { offNewGameData, offPlayerError, onNewGameData, onPlayerError } from './socket/socketApi';
+import { offNewGameData, offPlayerDisconnect, offPlayerError, onNewGameData, onPlayerDisconnect, onPlayerError } from './socket/socketApi';
 
 export const GameScreen = () => {
 
@@ -83,12 +83,18 @@ export const GameScreen = () => {
       setErrorText(error);
     }
 
+    const handlePlayerDisconnect = () => {
+      console.log("Player disconnected :((");
+    }
+
     onNewGameData(handleNewGameData);
     onPlayerError(handlePlayerError);
+    onPlayerDisconnect(handlePlayerDisconnect);
 
     return () => {
       offNewGameData(handleNewGameData);
       offPlayerError(handlePlayerError);
+      offPlayerDisconnect(handlePlayerDisconnect);
     }
   }, []);
 

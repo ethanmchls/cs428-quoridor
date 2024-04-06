@@ -11,6 +11,7 @@ const gameStartedEvent = "gameStarted";
 const leftLobbyEvent = "leftLobby";
 const newGameDataEvent = "newGameData";
 const playerErrorEvent = "playerError";
+const playerDisconnectEvent = "playerDisconnected";
 
 /**
  * Represents the structure of a lobby.
@@ -135,6 +136,23 @@ export function onNewGameData(f) {
  */
 export function onPlayerError(f) {
     socket.on(playerErrorEvent, f);
+}
+
+/**
+ *
+ * @param {function(string): void} f - A function that is called when a player disconnects from the game.
+ */
+export function onPlayerDisconnect(f) {
+    socket.on(playerDisconnectEvent, f);
+}
+
+/**
+ * Removes the listener for the "playerDisconnect" event.
+ *
+ * @param {function(string): void} f - The function to be removed from the listeners.
+ */
+export function offPlayerDisconnect(f) {
+    socket.off(playerDisconnectEvent, f);
 }
 
 /**
