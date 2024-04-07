@@ -35,7 +35,7 @@ const PlacedWall = ({ classes }) => {
   );
 }
 
-export const GameGrid = ({ player1, updatePlayer1, player2, updatePlayer2, walls, updateWalls, placeableWalls, updatePlaceableWalls }) => {
+export const GameGrid = ({ player1, updatePlayer1, player2, updatePlayer2, walls, updateWalls, placeableWalls, updatePlaceableWalls, playerNum }) => {
 
   // const subtractWall = (player) => {
   //   const tmp = player;
@@ -496,15 +496,15 @@ export const GameGrid = ({ player1, updatePlayer1, player2, updatePlayer2, walls
     <div className="flex-grow">
       <div className="flex justify-center items-center mx-auto h-full">
         <div className={`flex flex-col mx-auto rounded-md ${borderColor} ${borderWidth}`}>
-          <div className={`flex justify-center text-primary font-bold text-lg w-full ${cellColor}`}>Player 1</div>
+          <div className={`flex justify-center text-primary font-bold text-lg w-full ${cellColor}`}>{playerNum === 1 ? "Player 2" : "Player 1"}</div>
           <div className={`w-auto flex flex-row my-auto`}>
-            {p1WallStack}
-            <div className={`${borderWidth} border-l-black border-r-black border-t-amber-900 border-b-amber-900`}>
+            {playerNum === 1 ? p2WallStack : p1WallStack}
+            <div className={`${borderWidth} border-l-black border-r-black border-t-amber-900 border-b-amber-900 ${playerNum === 1 ? "scale-y-[-1]" : ""}`}>
               <div className={`grid grid-cols-17 grow`}>{grid}</div>
             </div>
-            {p2WallStack}
+            {playerNum === 1 ? p1WallStack : p2WallStack}
           </div>
-          <div className={`flex justify-center text-primary font-bold text-lg w-full ${cellColor}`}>Player 2</div>
+          <div className={`flex justify-center text-primary font-bold text-lg w-full ${cellColor}`}>{playerNum === 1 ? "Player 1" : "Player 2"}</div>
         </div>
       </div>
     </div>

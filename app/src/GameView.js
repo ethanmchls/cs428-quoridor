@@ -116,6 +116,7 @@ export const GameScreen = () => {
         walls={walls}
         placeableWalls={placeableWalls}
         updatePlaceableWalls={updatePlaceableWalls}
+        // playerNum={1}  //TODO: determine player number
       />
       {/* <div className='error-text'>{errorText}</div> */}
       {showToast && (
