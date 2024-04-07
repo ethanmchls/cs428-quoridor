@@ -4,6 +4,7 @@ import { GameGrid } from './GameGrid.js';
 import { Footer } from './footer';
 import { Header, PATH } from './header.js';
 import { offNewGameData, offPlayerDisconnect, offPlayerError, onNewGameData, onPlayerDisconnect, onPlayerError } from './socket/socketApi';
+import GameEndDialog from './GameEndDialog.js';
 
 export const GameScreen = () => {
 
@@ -34,6 +35,8 @@ export const GameScreen = () => {
   const [placeableWalls, setPlaceableWalls] = useState(allWalls);
   const [errorText, setErrorText] = useState("");
   const [showToast, setShowToast] = useState(false);
+  const [gameEndTitle, setGameEndTitle] = useState("");
+  const [gameEndText, setGameEndText] = useState("");
   const updatePlayer1 = (player) => {
     setPlayer1(player);
   }
@@ -84,7 +87,11 @@ export const GameScreen = () => {
     }
 
     const handlePlayerDisconnect = () => {
-      console.log("Player disconnected :((");
+      // console.log("Player disconnected :((");
+      // <button className="btn" onClick={()=>document.getElementById('my_modal_1').showModal()}>open modal</button>
+      setGameEndTitle("You Win!");
+      setGameEndText("Your opponent disconnected. You win by default!");
+      document.getElementById('game_end_dialog').showModal()
     }
 
     onNewGameData(handleNewGameData);
@@ -100,7 +107,8 @@ export const GameScreen = () => {
 
   return (
     <div className='bg-base-100 h-screen flex flex-col'>
-      <Header currentPath={PATH.GAME} /> 
+      <Header currentPath={PATH.GAME} />
+      <GameEndDialog title={gameEndTitle} text={gameEndText} />
       <GameGrid
         player1={player1}
         updatePlayer1={updatePlayer1}
