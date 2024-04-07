@@ -23,8 +23,11 @@ export class Game {
     }
 
     sendCurrentGameData() {
-        this.players.forEach((player) => {
-            player.currentGameData(this.game.getGameData());
+        const gameData = this.game.getGameData();
+
+        this.players.forEach((player, i) => {
+            gameData.playerIndex = i;
+            player.currentGameData(gameData);
         });
     }
 

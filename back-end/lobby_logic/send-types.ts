@@ -8,7 +8,8 @@ export type LobbySendType = {
 }
 
 export type GameSendType = {
-    currentTurn: number;
+    currentTurn: number,
+    playerIndex: number,
     pawns: PawnLocation[],
     walls: WallLocation[],
     playerMoves: PawnLocation[][],
