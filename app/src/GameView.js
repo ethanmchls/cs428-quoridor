@@ -88,7 +88,6 @@ export const GameScreen = () => {
 
     const handlePlayerDisconnect = () => {
       // console.log("Player disconnected :((");
-      // <button className="btn" onClick={()=>document.getElementById('my_modal_1').showModal()}>open modal</button>
       setGameEndTitle("You Win!");
       setGameEndText("Your opponent disconnected. You win by default!");
       document.getElementById('game_end_dialog').showModal()
