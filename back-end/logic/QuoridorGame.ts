@@ -82,14 +82,18 @@ export class QuoridorGame {
         return checkTrappedPawnHelper.bind(this)(currentPlayer.pawn, moves, []);
     }
 
+    isPawnInSpace(r: number, c: number): boolean {
+        return this.players.every((player) => player.pawn.r === r && player.pawn.c === c); 
+    }
+
     getAvailablePawnMoves(pawn: PawnLocation): PawnLocation[] {
         const r = pawn.r;
         const c = pawn.c;
         const moves = [];
-        const isBlockedLeft = this.currentBoard.hasWall(r, c - 1);
-        const isBlockedRight = this.currentBoard.hasWall(r, c + 1);
-        const isBlockedUp = this.currentBoard.hasWall(r - 1, c);
-        const isBlockedDown = this.currentBoard.hasWall(r + 1, c);
+        const isBlockedLeft = this.currentBoard.hasWall(r, c - 1) || this.isPawnInSpace(r, c - 1);
+        const isBlockedRight = this.currentBoard.hasWall(r, c + 1) || this.isPawnInSpace(r, c + 1);
+        const isBlockedUp = this.currentBoard.hasWall(r - 1, c) || this.isPawnInSpace(r - 1, c);
+        const isBlockedDown = this.currentBoard.hasWall(r + 1, c) || this.isPawnInSpace(r + 1, c);
         if (r > 0 && !isBlockedUp) {
             moves.push({r: r - 2, c: c});
         }
