@@ -35,7 +35,7 @@ const PlacedWall = ({ classes }) => {
   );
 }
 
-export const GameGrid = ({ player1, updatePlayer1, player2, updatePlayer2, walls, updateWalls, placeableWalls, updatePlaceableWalls, playerNum }) => {
+export const GameGrid = ({ player1, updatePlayer1, player2, updatePlayer2, walls, updateWalls, placeableWalls, updatePlaceableWalls, playerNum, isPlayerTurn }) => {
 
   // const subtractWall = (player) => {
   //   const tmp = player;
@@ -491,12 +491,19 @@ export const GameGrid = ({ player1, updatePlayer1, player2, updatePlayer2, walls
       }
     }
   }
+  const opponentName = "Opponent"
+  const playerName = "You"
 
   return (
     <div className="flex-grow">
       <div className="flex justify-center items-center mx-auto h-full">
         <div className={`flex flex-col mx-auto rounded-md ${borderColor} ${borderWidth}`}>
-          <div className={`flex justify-center text-primary font-bold text-lg w-full ${cellColor}`}>{playerNum === 1 ? "Player 2" : "Player 1"}</div>
+          <div className={`flex justify-center text-primary font-bold text-lg w-full ${cellColor}`}>
+            {isPlayerTurn
+              ? opponentName
+              : `\u2022 ${opponentName} \u2022`
+            }
+          </div>
           <div className={`w-auto flex flex-row my-auto`}>
             {playerNum === 1 ? p2WallStack : p1WallStack}
             <div className={`${borderWidth} border-l-black border-r-black border-t-amber-900 border-b-amber-900 ${playerNum === 1 ? "scale-y-[-1]" : ""}`}>
@@ -504,7 +511,12 @@ export const GameGrid = ({ player1, updatePlayer1, player2, updatePlayer2, walls
             </div>
             {playerNum === 1 ? p1WallStack : p2WallStack}
           </div>
-          <div className={`flex justify-center text-primary font-bold text-lg w-full ${cellColor}`}>{playerNum === 1 ? "Player 1" : "Player 2"}</div>
+          <div className={`flex justify-center text-primary font-bold text-lg w-full ${cellColor}`}>
+          {isPlayerTurn
+              ? `\u2022 ${playerName} \u2022`
+              : playerName
+            }
+          </div>
         </div>
       </div>
     </div>

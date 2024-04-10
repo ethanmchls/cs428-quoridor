@@ -37,6 +37,8 @@ export const GameScreen = () => {
   const [showToast, setShowToast] = useState(false);
   const [gameEndTitle, setGameEndTitle] = useState("");
   const [gameEndText, setGameEndText] = useState("");
+  const [playerIndex, setPlayerIndex] = useState(0);
+  const [isPlayerTurn, setIsPlayerTurn] = useState(false);
   const updatePlayer1 = (player) => {
     setPlayer1(player);
   }
@@ -75,7 +77,7 @@ export const GameScreen = () => {
         prevPlayer.nWalls = data.numWalls[0];
         prevPlayer.pawnPos = [data.pawns[0].r, data.pawns[0].c];
         if (data.playerIndex === 0) {
-          prevPlayer.moves = data.playerMoves.map((move) => `${move.r}-${move.c}`);
+          prevPlayer.moves = data.playerMoves[0].map((move) => `${move.r}-${move.c}`);
         }
         return prevPlayer;
       });
@@ -84,10 +86,24 @@ export const GameScreen = () => {
         prevPlayer.nWalls = data.numWalls[1];
         prevPlayer.pawnPos = [data.pawns[1].r, data.pawns[1].c];
         if (data.playerIndex === 1) {
-          prevPlayer.moves = data.playerMoves.map((move) => `${move.r}-${move.c}`);
+          prevPlayer.moves = data.playerMoves[1].map((move) => `${move.r}-${move.c}`);
         }
         return prevPlayer;
       });
+
+      setPlayerIndex(data.playerIndex);
+      setIsPlayerTurn(data.currentTurn === data.playerIndex);
+
+      if (data.winner !== null) {
+        if (data.winner === playerIndex) {
+          setGameEndTitle("You Win!");
+          setGameEndText("Congratulations! You won the game!");
+        } else {
+          setGameEndTitle("You Lose!");
+          setGameEndText("Better luck next time! You lost the game.");
+        }
+        document.getElementById('game_end_dialog').showModal()
+      }
     }
 
     const handlePlayerError = (error) => {
@@ -116,6 +132,7 @@ export const GameScreen = () => {
     <div className='bg-base-100 h-screen flex flex-col'>
       <Header currentPath={PATH.GAME} />
       <GameEndDialog title={gameEndTitle} text={gameEndText} />
+      <p className='text-center text-2xl mt-4 h-0'>{isPlayerTurn ? "Your turn" : "Opponent's turn"}</p>
       <GameGrid
         player1={player1}
         updatePlayer1={updatePlayer1}
@@ -124,7 +141,8 @@ export const GameScreen = () => {
         walls={walls}
         placeableWalls={placeableWalls}
         updatePlaceableWalls={updatePlaceableWalls}
-        // playerNum={1}  //TODO: determine player number
+        playerNum={playerIndex+1}
+        isPlayerTurn={isPlayerTurn}
       />
       {/* <div className='error-text'>{errorText}</div> */}
       {showToast && (

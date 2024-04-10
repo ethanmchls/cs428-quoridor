@@ -65,10 +65,10 @@ const LobbyBox = memo(({gamesInProgress, playersWaiting}) => {
   return (
     <div className="h-fit p-8 flex flex-col border-2 border-primary mt-2 rounded-box bg-base-200">
       <h2>Lobby</h2>
-      <p>{gamesInProgress} games in progress</p>
+      {/* <p>{gamesInProgress} games in progress</p> */}
       <div className="flex flex-row mb-4">
-        <p>{connectedPlayers} players waiting for a game</p>
-        {Array.from({ length: connectedPlayers }, (_, index) => (
+        <p>{connectedPlayers-1} other player{connectedPlayers !== 2 ? "s" : ""} waiting for a game</p>
+        {Array.from({ length: connectedPlayers-1 }, (_, index) => (
           <img key={index} src={quoridorPawn} alt="pawn" className="h-6"/>
           ))}
       </div>
