@@ -222,6 +222,7 @@ export class QuoridorGame {
         return {
             currentTurn: this.currentTurn,
             playerIndex: 0,
+            winner: this.players[0]?.pawn.r === 7 ? 0 : (this.players[1]?.pawn.r === 0 ? 1 : null),
             pawns: this.players.map((player) => player.pawn),
             walls: this.currentBoard.walls,
             playerMoves: this.players.map((player) => this.getAvailablePawnMoves(player.pawn)),

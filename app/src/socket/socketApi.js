@@ -27,6 +27,7 @@ const playerDisconnectEvent = "playerDisconnected";
  * @typedef {Object} GameData
  * @property {number} currentTurn
  * @property {number} playerIndex - Index of what the player is (0 indexed), corrosponds with the following arrays
+ * @property {number | null} winner - Index of the winner (or null if no one has won)
  * @property {Array<PawnLocation>} pawns - The location of the pawn move.
  * @property {Array<WallLocation>} walls - The location of the wall move.
  * @property {Array<number>} numWalls - The number of walls each player has.

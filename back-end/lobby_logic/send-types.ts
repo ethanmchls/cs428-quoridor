@@ -10,6 +10,7 @@ export type LobbySendType = {
 export type GameSendType = {
     currentTurn: number,
     playerIndex: number,
+    winner: number | null,
     pawns: PawnLocation[],
     walls: WallLocation[],
     playerMoves: PawnLocation[][],
