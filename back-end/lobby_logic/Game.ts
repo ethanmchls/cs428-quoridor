@@ -16,6 +16,7 @@ export class Game {
         this.players = players;
         this.game = new QuoridorGame(players.map((player, i) => new QuoridorPlayer(player, 0, {r: i===0 ? 0 : 16, c: 8})));
         this.sendStartGame();
+        this.sendCurrentGameData();
     }
 
     takeTurn(player: Player, move: QuoridorMove) {
