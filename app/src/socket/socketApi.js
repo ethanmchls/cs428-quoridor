@@ -3,6 +3,7 @@ import { socket } from "./socket";
 const getLobbyName = "getLobbies";
 const joinLobbyName = "joinLobby";
 const makeMoveName = "makeMove";
+const getGameDataName = "getGameData";
 
 const connectedPlayersEvent = "connectedPlayers";
 const getLobbiesEvent = "lobbies";
@@ -60,6 +61,10 @@ const playerDisconnectEvent = "playerDisconnected";
  */
 export function getLobbies() {
     socket.emit(getLobbyName);
+}
+
+export function getGameData() {
+    socket.emit(getGameDataName);
 }
 
 /**

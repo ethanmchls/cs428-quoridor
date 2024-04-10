@@ -3,7 +3,7 @@ import { Player } from './player';
 import { GameGrid } from './GameGrid.js';
 import { Footer } from './footer';
 import { Header, PATH } from './header.js';
-import { offNewGameData, offPlayerDisconnect, offPlayerError, onNewGameData, onPlayerDisconnect, onPlayerError } from './socket/socketApi';
+import { offNewGameData, offPlayerDisconnect, offPlayerError, onNewGameData, onPlayerDisconnect, onPlayerError, getGameData } from './socket/socketApi';
 import GameEndDialog from './GameEndDialog.js';
 
 export const GameScreen = () => {
@@ -65,6 +65,8 @@ export const GameScreen = () => {
   }, [errorText]);
 
   useEffect(() => {
+    getGameData();
+
     const handleNewGameData = (data) => {
       console.log("Got new data: ", data);
       setWalls(data.walls.map((wall) => `${wall.r}-${wall.c}`));

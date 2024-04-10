@@ -74,6 +74,16 @@ io.on('connection', (socket) => {
 		catch (err) {
 			handleError(err, socket);
 		}
+	});
+
+	socket.on('getGameData', () => {
+		try {
+			const game = getCurrentGame(player);
+			game.sendCurrentGameData();
+		}
+		catch (err) {
+			handleError(err, socket);
+		}
 	})
 
 	socket.on('disconnect', () => {
