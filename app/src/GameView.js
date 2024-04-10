@@ -72,12 +72,18 @@ export const GameScreen = () => {
       setPlayer1((prevPlayer) => {
         prevPlayer.nWalls = data.numWalls[0];
         prevPlayer.pawnPos = [data.pawns[0].r, data.pawns[0].c];
+        if (data.playerIndex === 0) {
+          prevPlayer.moves = data.playerMoves.map((move) => `${move.r}-${move.c}`);
+        }
         return prevPlayer;
       });
 
       setPlayer2((prevPlayer) => {
         prevPlayer.nWalls = data.numWalls[1];
         prevPlayer.pawnPos = [data.pawns[1].r, data.pawns[1].c];
+        if (data.playerIndex === 1) {
+          prevPlayer.moves = data.playerMoves.map((move) => `${move.r}-${move.c}`);
+        }
         return prevPlayer;
       });
     }
@@ -97,7 +103,7 @@ export const GameScreen = () => {
     onPlayerError(handlePlayerError);
     onPlayerDisconnect(handlePlayerDisconnect);
 
-    return () => {
+    return () => { 
       offNewGameData(handleNewGameData);
       offPlayerError(handlePlayerError);
       offPlayerDisconnect(handlePlayerDisconnect);

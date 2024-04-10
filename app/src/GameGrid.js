@@ -50,7 +50,7 @@ export const GameGrid = ({ player1, updatePlayer1, player2, updatePlayer2, walls
 
   const updateBlockedMoves = (player) => {
     const tmp = player;
-    tmp.getAdjacentCells(walls);
+    // tmp.getAdjacentCells(walls);
     if (player.playerNum === 1) {
       updatePlayer1(tmp);
     }
