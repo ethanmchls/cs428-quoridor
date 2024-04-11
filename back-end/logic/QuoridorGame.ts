@@ -83,17 +83,17 @@ export class QuoridorGame {
     }
 
     isPawnInSpace(r: number, c: number): boolean {
-        return this.players.every((player) => player.pawn.r === r && player.pawn.c === c); 
+        return this.players.some((player) => player.pawn.r === r && player.pawn.c === c); 
     }
 
     getAvailablePawnMoves(pawn: PawnLocation): PawnLocation[] {
         const r = pawn.r;
         const c = pawn.c;
         const moves = [];
-        const isBlockedLeft = this.currentBoard.hasWall(r, c - 1) || this.isPawnInSpace(r, c - 1);
-        const isBlockedRight = this.currentBoard.hasWall(r, c + 1) || this.isPawnInSpace(r, c + 1);
-        const isBlockedUp = this.currentBoard.hasWall(r - 1, c) || this.isPawnInSpace(r - 1, c);
-        const isBlockedDown = this.currentBoard.hasWall(r + 1, c) || this.isPawnInSpace(r + 1, c);
+        const isBlockedLeft = this.currentBoard.hasWall(r, c - 1) || this.isPawnInSpace(r, c - 2);
+        const isBlockedRight = this.currentBoard.hasWall(r, c + 1) || this.isPawnInSpace(r, c + 2);
+        const isBlockedUp = this.currentBoard.hasWall(r - 1, c) || this.isPawnInSpace(r - 2, c);
+        const isBlockedDown = this.currentBoard.hasWall(r + 1, c) || this.isPawnInSpace(r + 2, c);
         if (r > 0 && !isBlockedUp) {
             moves.push({r: r - 2, c: c});
         }
@@ -226,7 +226,7 @@ export class QuoridorGame {
         return {
             currentTurn: this.currentTurn,
             playerIndex: 0,
-            winner: this.players[0]?.pawn.r === 7 ? 0 : (this.players[1]?.pawn.r === 0 ? 1 : null),
+            winner: this.players[0]?.pawn.r === 16 ? 0 : (this.players[1]?.pawn.r === 0 ? 1 : null),
             pawns: this.players.map((player) => player.pawn),
             walls: this.currentBoard.walls,
             playerMoves: this.players.map((player) => this.getAvailablePawnMoves(player.pawn)),

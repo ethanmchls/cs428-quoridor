@@ -84,8 +84,6 @@ export const GameGrid = ({ player1, updatePlayer1, player2, updatePlayer2, walls
   // Maybe have one state with the currently selected thing? 
   const [pawn1Clicked, setPawn1Clicked] = useState(false);
   const [pawn2Clicked, setPawn2Clicked] = useState(false);
-  const [cells1Clicked, setCells1Clicked] = useState(false);
-  const [cells2Clicked, setCells2Clicked] = useState(false);
   const [p1WallClicked, setP1WallClicked] = useState(false);
   const [p2WallClicked, setP2WallClicked] = useState(false);
   const [p1SelectedWall, setP1SelectedWall] = useState(10);
@@ -95,12 +93,10 @@ export const GameGrid = ({ player1, updatePlayer1, player2, updatePlayer2, walls
   updateBlockedMoves(player2);
 
   const handlePawn1Click = () => {
-    setCells1Clicked(false);
     setPawn1Clicked(!pawn1Clicked);
   };
 
   const handlePawn2Click = () => {
-    setCells2Clicked(false);
     setPawn2Clicked(!pawn2Clicked);
   };
 
@@ -118,7 +114,6 @@ export const GameGrid = ({ player1, updatePlayer1, player2, updatePlayer2, walls
       }
     });
     setPawn1Clicked(false);
-    setCells1Clicked(true);
   }
 
   const handleCells2Click = (pos) => {
@@ -135,7 +130,6 @@ export const GameGrid = ({ player1, updatePlayer1, player2, updatePlayer2, walls
       }
     });
     setPawn2Clicked(false);
-    setCells2Clicked(true);
   }
 
   const handleP1WallClick = (selectedWall) => {
@@ -174,6 +168,7 @@ export const GameGrid = ({ player1, updatePlayer1, player2, updatePlayer2, walls
         const wallColor = isPlacedWall ? `${placedWallColor}` : `${emptyWallColor}`;
 
         if (i === pawn1R && j === pawn1C) {
+          console.log("Pushing pawn 1: ", player1.pawnPos);
           row.push(
               <GridCell
                 key={`${i}-${j}`}
@@ -192,6 +187,7 @@ export const GameGrid = ({ player1, updatePlayer1, player2, updatePlayer2, walls
             );
         }
         else if (i === pawn2R && j === pawn2C) {
+          console.log("Pushing pawn 2: ", player2.pawnPos);
           row.push(
               <GridCell
                 key={`${i}-${j}`}
@@ -358,20 +354,6 @@ export const GameGrid = ({ player1, updatePlayer1, player2, updatePlayer2, walls
       let r = parseInt(player2.moves[i].split('-')[0]);
       let c = parseInt(player2.moves[i].split('-')[1]);
       grid[r].props.children[c] = <GridCell pos={`${r}-${c}`} classes={`${cellWidth} ${cellHeight} ${cellColorHl}`} children={<div></div>} onClick={handleCells2Click} player={2} />;
-    }
-  }
-  if (cells1Clicked) {
-    for (let i = 0; i < player1.moves.length; i++) {
-      let r = parseInt(player1.moves[i].split('-')[0]);
-      let c = parseInt(player1.moves[i].split('-')[1]);
-      grid[r].props.children[c] = <GridCell pos={`${r}-${c}`} classes={`${cellWidth} ${cellHeight} ${cellColor}`} children={<div></div>} onClick={() => {}} player={1} />;
-    }
-  }
-  if (cells2Clicked) {
-    for (let i = 0; i < player2.moves.length; i++) {
-      let r = parseInt(player2.moves[i].split('-')[0]);
-      let c = parseInt(player2.moves[i].split('-')[1]);
-      grid[r].props.children[c] = <GridCell pos={`${r}-${c}`} classes={`${cellWidth} ${cellHeight} ${cellColor}`} children={<div></div>} onClick={() => {}} player={2} />;
     }
   }
 

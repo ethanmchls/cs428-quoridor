@@ -95,7 +95,8 @@ export const GameScreen = () => {
       setIsPlayerTurn(data.currentTurn === data.playerIndex);
 
       if (data.winner !== null) {
-        if (data.winner === playerIndex) {
+        // debugger;
+        if (data.winner === data.playerIndex) {
           setGameEndTitle("You Win!");
           setGameEndText("Congratulations! You won the game!");
         } else {
