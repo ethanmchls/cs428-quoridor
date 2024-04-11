@@ -61,17 +61,17 @@ export const GameGrid = ({ player1, updatePlayer1, player2, updatePlayer2, walls
 
   const gridSize = 17;  // 9 cells + 8 walls = 17 x 17 grid
   // Constants used to adjust the grid cell attributes
-  const cellHeight = "xl:h-[65px] lg:h-[50px] h-[30px]";
-  const cellWidth = "xl:w-[65px] lg:w-[50px] w-[30px]";
-  const wallWidth = "xl:w-[15px] lg:w-[10px] w-[8px]";
-  const wallHeight = "xl:h-[15px] lg:h-[10px] h-[8px]";
-  const wallStackWidth = "xl:w-[155px] lg:w-[100px] w-[80px]"
+  const cellHeight = "xl:h-[60px] lg:h-[50px] h-[30px]";
+  const cellWidth = "xl:w-[60px] lg:w-[50px] w-[30px]";
+  const wallWidth = "xl:w-[12px] lg:w-[10px] w-[8px]";
+  const wallHeight = "xl:h-[12px] lg:h-[10px] h-[8px]";
+  const wallStackWidth = "xl:w-[150px] lg:w-[100px] w-[80px]"
   const clickedWallColor = "bg-amber-200";
   const hoveredWallColor = "hover:bg-amber-400";
   const emptyWallColor = "bg-amber-900";
   const emptyWallColorHl = "bg-amber-900 hover:bg-amber-600";
   const placedWallColor = "bg-amber-600";
-  const borderWidth = "xl:border-[15px] lg:border-[10px] border-[8px]";
+  const borderWidth = "xl:border-[12px] lg:border-[10px] border-[8px]";
   const borderColor = "border-orange-950";
   const cellColor = "bg-orange-950";
   const cellColorHl = "bg-orange-300"
@@ -487,7 +487,7 @@ export const GameGrid = ({ player1, updatePlayer1, player2, updatePlayer2, walls
             }
           </div>
           <div className={`w-auto flex flex-row my-auto`}>
-            {playerNum === 1 ? p2WallStack : p1WallStack}
+            {playerNum === 1 ? <div className="scale-y-[-1]">{p2WallStack}</div> : <div className="scale-y-[-1]">{p1WallStack}</div>}
             <div className={`${borderWidth} border-l-black border-r-black border-t-amber-900 border-b-amber-900 ${playerNum === 1 ? "scale-y-[-1]" : ""}`}>
               <div className={`grid grid-cols-17 grow`}>{grid}</div>
             </div>
